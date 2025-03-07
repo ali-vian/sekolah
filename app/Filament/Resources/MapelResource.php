@@ -56,18 +56,13 @@ class MapelResource extends Resource
                 //
                 TextColumn::make('kode_mapel')
                     ->searchable()
-                    ->sortable(),
+                    ->label('Kode Mapel'),
                 TextColumn::make('nama_mapel')
                     ->searchable()
-                    ->sortable(),
-                TextColumn::make('durasi')
-                    ->label('Jumlah Jam')
-                    ->searchable()
-                    ->sortable(),
+                    ->label('Nama Mapel'),
                 TextColumn::make('jurusan')
                     ->label('Jurusan')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 TextColumn::make('jenjang')
                     ->label('Jenjang Kelas')
                     ->searchable()

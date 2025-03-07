@@ -73,7 +73,14 @@ class AdminResource extends Resource
         )
             ->columns([
                 //
+                TextColumn::make('nip')
+                    ->label('NIP')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('jenis_kelamin')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('roles.name')
@@ -82,12 +89,8 @@ class AdminResource extends Resource
                 TextColumn::make('email')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('nip')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('jenis_kelamin')
-                    ->searchable()
-                    ->sortable(),
+                
+                
             ])
             ->filters([
                 //

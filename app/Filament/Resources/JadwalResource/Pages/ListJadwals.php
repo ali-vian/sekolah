@@ -4,6 +4,7 @@ namespace App\Filament\Resources\JadwalResource\Pages;
 
 use App\Filament\Resources\JadwalResource;
 use Filament\Actions;
+use Filament\Actions\Modal\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 
 class ListJadwals extends ListRecords
@@ -13,7 +14,15 @@ class ListJadwals extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\Action::make('Export')
+                ->url('/')
+                ->icon('heroicon-o-printer')
+                ->color('success'),
+            Actions\Action::make('Lihat Jadwal')
+                ->url('/jadwal/lihat-jadwal')
+                ->icon('heroicon-o-eye')
+                ->color('warning'),
+            Actions\CreateAction::make()->icon('heroicon-o-plus-circle'),
         ];
     }
 }

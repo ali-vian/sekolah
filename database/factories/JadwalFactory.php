@@ -18,12 +18,11 @@ class JadwalFactory extends Factory
     {
         return [
             //
-            'hari' => $this->faker->randomElement(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat']),
-            'jam_mulai' => $this->faker->time('H:i'),
-            'jam_selesai' => $this->faker->time('H:i'),
-            'id_kelas' => $this->faker->numberBetween(1, 6),
-            'id_mapel' => $this->faker->numberBetween(1, 6),
-            'id_guru' => 2
+            'hari' => $this->faker->randomElement(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']),
+            'waktu_id' => $this->faker->numberBetween(1, 6),
+            'kelas_id' => $this->faker->numberBetween(1, 6),
+            'mapel_id' => $this->faker->numberBetween(1, 6),
+            'guru_id' => 2
         ];
     }
 }

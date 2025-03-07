@@ -59,18 +59,19 @@ class StudentResource extends Resource
         return $table
             ->columns([
                 //
+                TextColumn::make('nis')
+                    ->searchable()
+                    ->label('NIS'),
                 TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('nis')
-                    ->searchable(),
-                TextColumn::make('email')
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('kelas.nama_kelas')
                     ->label('Kelas')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('jenis_kelamin')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('email')
                     ->searchable()
                     ->sortable(),
             ])

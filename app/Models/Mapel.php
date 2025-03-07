@@ -14,7 +14,11 @@ class Mapel extends Model
         'kode_mapel',
         'nama_mapel',
         'jenjang',
-        'durasi',
         'jurusan',
     ];
+
+    public function jadwal()
+    {
+        return $this->hasMany(Jadwal::class, 'mapel_id', 'id');
+    }
 }
