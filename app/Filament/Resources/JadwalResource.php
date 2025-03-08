@@ -19,6 +19,7 @@ use Filament\Tables\Grouping\Group;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentColor;
 use App\Models\Waktu;
+use App\Filament\Resources\JadwalResource\Widgets\CustomTableWidget;
  
 FilamentColor::register([
     'indigo' => Color::Violet,
@@ -29,6 +30,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class JadwalResource extends Resource
 {
+    public static function getWidgets(): array
+    {
+        return [
+            CustomTableWidget::class,
+        ];
+    }
     protected static ?string $model = Jadwal::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -115,6 +122,10 @@ class JadwalResource extends Resource
                 ]),
             ]);
     }
+
+
+   
+
 
     public static function getRelations(): array
     {

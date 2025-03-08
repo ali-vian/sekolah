@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('jadwal_id')->constrained('jadwal');
             $table->foreignId('student_id')->constrained('student');
             $table->enum('status', ['Hadir', 'Tidak Hadir','Izin','Sakit']);
-            $table->time('waktu_absen');
+            $table->dateTime('waktu_absen');
             $table->string('keterangan');
             $table->timestamps();
         });
