@@ -34,4 +34,10 @@ class Jadwal extends Model
     {
         return $this->belongsTo(User::class, 'guru_id', 'id');
     }
+
+    public function absenGuru()
+    {
+        return $this->hasMany(AbsenGuru::class, 'jadwal_id');
+    }
+
 }

@@ -1,92 +1,201 @@
 <?php
-
 // namespace App\Filament\Resources;
 
 // use App\Filament\Resources\AbsenMapelResource\Pages;
-// use App\Filament\Resources\AbsenMapelResource\RelationManagers;
 // use App\Models\AbsenMapel;
-// use Filament\Forms;
-// use Filament\Forms\Components\TextInput;
-// use Filament\Forms\Form;
 // use Filament\Resources\Resource;
 // use Filament\Tables;
 // use Filament\Tables\Columns\TextColumn;
+// use Filament\Forms\Components\TextInput;
+// use Filament\Forms\Form;
 // use Filament\Tables\Table;
-// use Illuminate\Database\Eloquent\Builder;
-// use Illuminate\Database\Eloquent\SoftDeletingScope;
+// use App\Models\Student;
+// use DateTime;
+// use DateTimeZone;
 // use Carbon\Carbon;
-
+// use Filament\Forms\Components\DatePicker;
+// use Filament\Forms\Components\Radio;
+// use Filament\Forms\Components\Section;
+// use Filament\Tables\Actions\Action;
+// use Filament\Tables\Actions\BulkAction;
+// use Filament\Tables\Filters\Filter;
+// use Filament\Forms\Components\Card;
+// use Illuminate\Database\Eloquent\Builder;
+// use Filament\Tables\Columns\SelectColumn;
+// use Filament\Forms\Components\Grid;
+// use Filament\Forms\Components\Hidden;
+// use Illuminate\Database\Eloquent\Collection;
 
 // class AbsenMapelResource extends Resource
 // {
 //     protected static ?string $model = AbsenMapel::class;
 
-//     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+//     protected static ?string $navigationIcon = 'heroicon-o-clipboard';
 
 //     public static function form(Form $form): Form
 //     {
 //         return $form
 //             ->schema([
 //                 //
-//                 TextInput::make('jadwal_id'),
-//                 TextInput::make('student_id'),
-//                 TextInput::make('status'),
-//                 TextInput::make('keterangan'),
-//                 TextInput::make('waktu_absen'),
 //             ]);
+//     }
+
+//     public static function getColumn(){
+//         $dates = AbsenMapel::distinct()->pluck('waktu_absen')->sort()->map(function ($date) {
+//             return Carbon::parse($date);
+//         });
+
+//         $columns = [
+//             TextColumn::make('name')
+//                 ->label('Nama')
+//                 ->sortable()
+//                 ->searchable(),
+//         ];
+
+//         foreach ($dates as $date) {
+//             $dateFormatted = $date->format('Y-m-d');
+//             $columnName = 'attendance_' . $dateFormatted;
+            
+//             $columns[] = SelectColumn::make($columnName)
+//                 ->label($date->format('d/m/Y'))
+//                 ->options([
+//                     'Hadir' => 'Hadir',
+//                     'Sakit' => 'Sakit',
+//                     'Ijin' => 'Ijin',
+//                     'Absen' => 'Absen',
+//                     '-' => '-',
+//                 ])
+//                 ->selectablePlaceholder(false)
+//                 ->getStateUsing(function ($record) use ($dateFormatted) {
+//                     $status = self::getStatus($record, $dateFormatted);
+//                     return $status !== '-' ? $status : '-';
+//                 })
+//                 ->updateStateUsing(function ($state, $record, $column) use ($dateFormatted) {
+//                     // Find existing attendance record
+//                     $absensi = AbsenMapel::where('student_id', $record->id)
+//                         ->whereDate('waktu_absen', $dateFormatted)
+//                         ->first();
+                    
+//                     if ($absensi) {
+//                         // Update existing record
+//                         $absensi->update([
+//                             'status' => $state,
+//                         ]);
+//                     } else if ($state !== '-') {
+//                         // Create new record if status is not '-'
+//                         AbsenMapel::create([
+//                             'student_id' => $record->id,
+//                             'waktu_absen' => $dateFormatted . ' 00:00:00',
+//                             'jadwal_id' => 1,
+//                             'status' => $state,
+//                         ]);
+//                     }
+//                 });
+//         }
+
+//         return $columns;
 //     }
 
 //     public static function table(Table $table): Table
 //     {
-//         // return $table
-//         //     ->columns([
-//         //         //
-//         //         TextColumn::make('jadwal_id'),
-//         //         TextColumn::make('student_id'),
-//         //         TextColumn::make('status'),
-//         //         TextColumn::make('keterangan'),
-//         //         TextColumn::make('waktu_absen'),
-//         //     ])
-//         $dates = AbsenMapel::select('created_at')->distinct()->pluck('created_at')->toArray();
-
-//             return $table
-//                 ->columns(
-//                     array_merge(
-//                         [
-//                             // Kolom Nama
-//                             TextColumn::make('student.name')
-//                                 ->label('Nama')
-//                                 ->sortable()
-//                                 ->searchable(),
-//                         ],
-//                         // Buat kolom berdasarkan tanggal yang ada di database
-//                         array_map(function ($date) {
-//                             return TextColumn::make('date_' . $date)
-//                                 ->label(Carbon::parse($date)->format('d M'))
-//                                 ->getStateUsing(fn ($record) => AbsenMapel::where('student_id', $record->nama)->where('created_at', $date)->value('status') ?? '-')
-//                                 ->badge()
-//                                 ->color(fn ($state) => $state === 'Hadir' ? 'success' : ($state === 'Sakit' ? 'danger' : 'danger'));
-//                         }, $dates)
-//                     )
-//                 )
+//         return $table
+//             ->query(
+//                 Student::query()->with(['AbsenMapel'])
+//             )
+//             ->headerActions([
+//                 Action::make('create_attendance')
+//                     ->label('Tambah Absensi Baru')
+//                     ->icon('heroicon-o-plus')
+//                     ->form([
+//                         DatePicker::make('tanggal_absen')
+//                             ->label('Tanggal Absensi')
+//                             ->required()
+//                             ->default(now()),
+//                         Section::make('Daftar Siswa')
+//                             ->schema([
+//                                 Grid::make(['default' => 1])
+//                                     ->schema(function () {
+//                                         $students = Student::all();
+//                                         $schema = [];
+                                        
+//                                         foreach ($students as $student) {
+//                                             $schema[] = Radio::make('student_' . $student->id)
+//                                                 ->label($student->name)
+//                                                 ->options([
+//                                                     'Hadir' => 'Hadir',
+//                                                     'Ijin' => 'Ijin',
+//                                                     'Sakit' => 'Sakit',
+//                                                     'Absen' => 'Absen',
+//                                                 ])
+//                                                 ->default('Hadir')
+//                                                 ->inline()
+//                                                 ->inlineLabel(true);
+//                                         }
+                                        
+//                                         return $schema;
+//                                     })
+//                             ])
+//                     ])
+//                     ->action(function (array $data) {
+//                         $tanggalAbsen = $data['tanggal_absen'] . ' 00:00:00';
+                        
+//                         // Process each student's attendance
+//                         foreach ($data as $key => $value) {
+//                             if (strpos($key, 'student_') === 0) {
+//                                 $studentId = substr($key, 8); // Extract student ID from the field name
+                                
+//                                 // Check if record already exists
+//                                 $existingRecord = AbsenMapel::where('student_id', $studentId)
+//                                     ->whereDate('waktu_absen', $data['tanggal_absen'])
+//                                     ->first();
+                                
+//                                 if ($existingRecord) {
+//                                     // Update existing record
+//                                     $existingRecord->update([
+//                                         'status' => $value,
+//                                     ]);
+//                                 } else {
+//                                     // Create new record
+//                                     AbsenMapel::create([
+//                                         'student_id' => $studentId,
+//                                         'waktu_absen' => $tanggalAbsen,
+//                                         'jadwal_id' => 1,
+//                                         'status' => $value,
+//                                     ]);
+//                                 }
+//                             }
+//                         }
+//                     })
+//             ])
+            
+//             ->columns(
+//                 self::getColumn()
+//             )
+//             ->modifyQueryUsing(fn ($query) => $query->with('absenmapel'))
+//             ->recordUrl(null)
 //             ->filters([
-//                 //
+//                 // Tambahkan filter jika perlu
 //             ])
 //             ->actions([
-//                 Tables\Actions\EditAction::make(),
+//                 // Tables\Actions\EditAction::make(),
 //             ])
 //             ->bulkActions([
-//                 Tables\Actions\BulkActionGroup::make([
-//                     Tables\Actions\DeleteBulkAction::make(),
-//                 ]),
+//                 // Tables\Actions\DeleteBulkAction::make(),
 //             ]);
+//     }
+
+//     public static function getStatus($record, $date)
+//     {
+//         $absensi = $record->absenmapel->first(function ($absen) use ($date) {
+//             return Carbon::parse($absen->waktu_absen)->toDateString() === $date;
+//         });
+    
+//         return $absensi ? $absensi->status : '-';
 //     }
 
 //     public static function getRelations(): array
 //     {
-//         return [
-//             //
-//         ];
+//         return [];
 //     }
 
 //     public static function getPages(): array
@@ -115,11 +224,20 @@ use DateTime;
 use DateTimeZone;
 use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\TimePicker;
+use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Section;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\Card;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\SelectColumn;
-
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Placeholder;
+use Illuminate\Database\Eloquent\Collection;
+use Filament\Notifications\Notification;
+use Filament\Support\Exceptions\Halt;
 
 class AbsenMapelResource extends Resource
 {
@@ -132,71 +250,261 @@ class AbsenMapelResource extends Resource
         return $form
             ->schema([
                 //
-                TextInput::make('jadwal_id'),
-                TextInput::make('student_id'),
-                TextInput::make('status'),
-                TextInput::make('keterangan'),
-                DateTimePicker::make('waktu_absen'),
             ]);
+    }
+
+    public static function getColumn(){
+        $dates = AbsenMapel::distinct()->pluck('waktu_absen')->sort()->map(function ($date) {
+            return Carbon::parse($date);
+        });
+
+        $columns = [
+            TextColumn::make('name')
+                ->label('Nama')
+                ->sortable()
+                ->searchable(),
+        ];
+
+        foreach ($dates as $date) {
+            $dateFormatted = $date->format('Y-m-d');
+            $columnName = 'attendance_' . $dateFormatted;
+            
+            $columns[] = SelectColumn::make($columnName)
+                ->label($date->format('d/m/Y'))
+                ->options([
+                    'Hadir' => 'Hadir',
+                    'Sakit' => 'Sakit',
+                    'Ijin' => 'Ijin',
+                    'Absen' => 'Absen',
+                    '-' => '-',
+                ])
+                ->selectablePlaceholder(false)
+                ->getStateUsing(function ($record) use ($dateFormatted) {
+                    $status = self::getStatus($record, $dateFormatted);
+                    return $status !== '-' ? $status : '-';
+                })
+                ->updateStateUsing(function ($state, $record, $column) use ($dateFormatted) {
+                    // Find existing attendance record
+                    $absensi = AbsenMapel::where('student_id', $record->id)
+                        ->whereDate('waktu_absen', $dateFormatted)
+                        ->first();
+                    
+                    if ($absensi) {
+                        // Update existing record
+                        $absensi->update([
+                            'status' => $state,
+                        ]);
+                    } else if ($state !== '-') {
+                        // Create new record if status is not '-'
+                        AbsenMapel::create([
+                            'student_id' => $record->id,
+                            'waktu_absen' => $dateFormatted . ' 00:00:00',
+                            'jadwal_id' => 1,
+                            'status' => $state,
+                        ]);
+                    }
+                });
+        }
+
+        return $columns;
     }
 
     public static function table(Table $table): Table
     {
         return $table
-        ->query(
-            Student::query()->with(['AbsenMapel'])
-        )
-        ->columns([
-            TextColumn::make('name')
-                ->label('Nama')
-                ->sortable()
-                ->searchable(),
+            ->query(
+                Student::query()->with(['AbsenMapel'])
+            )
+            ->headerActions([
+                // Add new attendance date
+                Action::make('create_attendance')
+                    ->label('Absensi Baru')
+                    ->icon('heroicon-o-plus')
+                    ->form([
+                        DatePicker::make('tanggal_absen')
+                            ->label('Tanggal Absensi')
+                            ->required()
+                            ->default(now()),
+                        Section::make('Daftar Siswa')
+                            ->schema([
+                                Grid::make()
+                                    ->schema(function () {
+                                        $students = Student::all();
+                                        $schema = [];
+                                        
+                                        foreach ($students as $student) {
+                                            $schema[] = Radio::make('student_' . $student->id)
+                                                ->label($student->name)
+                                                ->options([
+                                                    'Hadir' => 'Hadir',
+                                                    'Ijin' => 'Ijin',
+                                                    'Sakit' => 'Sakit',
+                                                    'Absen' => 'Absen',
+                                                ])
+                                                ->default('Hadir')
+                                                ->inline()
+                                                ->inlineLabel(false);
+                                        }
+                                        
+                                        return $schema;
+                                    })
+                            ])
+                    ])
+                    ->action(function (array $data) {
+                        $tanggalAbsen = $data['tanggal_absen'] . ' 00:00:00';
+                        
+                        // Process each student's attendance
+                        foreach ($data as $key => $value) {
+                            if (strpos($key, 'student_') === 0) {
+                                $studentId = substr($key, 8); // Extract student ID from the field name
+                                
+                                // Check if record already exists
+                                $existingRecord = AbsenMapel::where('student_id', $studentId)
+                                    ->whereDate('waktu_absen', $data['tanggal_absen'])
+                                    ->first();
+                                
+                                if ($existingRecord) {
+                                    // Update existing record
+                                    $existingRecord->update([
+                                        'status' => $value,
+                                    ]);
+                                } else {
+                                    // Create new record
+                                    AbsenMapel::create([
+                                        'student_id' => $studentId,
+                                        'waktu_absen' => $tanggalAbsen,
+                                        'jadwal_id' => 1,
+                                        'status' => $value,
+                                    ]);
+                                }
+                            }
+                        }
 
-            // TextColumn::make('01/03/2025')
-            //     ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-01')),
+                        Notification::make()
+                            ->title('Absensi berhasil disimpan')
+                            ->success()
+                            ->send();
+                    }),
 
-            // TextColumn::make('08/03/2025')
-            //     ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-08')),
+                // Manage attendance dates
+                Action::make('manage_dates')
+                    ->label('Kelola Tanggal')
+                    ->icon('heroicon-o-calendar')
+                    ->form([
+                        Section::make('Kelola Tanggal Absensi')
+                            ->description('Edit atau hapus tanggal absensi yang sudah ada')
+                            ->schema(function () {
+                                $dates = AbsenMapel::distinct()
+                                    ->pluck('waktu_absen')
+                                    ->sort()
+                                    ->map(function ($date) {
+                                        return Carbon::parse($date)->format('Y-m-d');
+                                    })
+                                    ->unique();
 
-            // TextColumn::make('15/03/2025')
-            //     ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-15')),
-
-SelectColumn::make('01/03/2025')
-    ->options([
-        'hadir' => 'Hadir',
-        'izin' => 'Izin',
-        'alpha' => 'Alpha',
-    ])
-    ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-01'))
-    ->afterStateUpdated(fn ($record, $state) => self::updateStatus($record, '2025-03-01', $state)),
-
-SelectColumn::make('08/03/2025')
-    ->options([
-        'hadir' => 'Hadir',
-        'izin' => 'Izin',
-        'alpha' => 'Alpha',
-    ])
-    ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-08'))
-    ->afterStateUpdated(fn ($record, $state) => self::updateStatus($record, '2025-03-08', $state)),
-
-SelectColumn::make('15/03/2025')
-    ->options([
-        'hadir' => 'Hadir',
-        'izin' => 'Izin',
-        'alpha' => 'Alpha',
-    ])
-    ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-15'))
-    ->afterStateUpdated(fn ($record, $state) => self::updateStatus($record, '2025-03-15', $state)),
-
+                                $schema = [];
+                                
+                                foreach ($dates as $date) {
+                                    $formattedDate = Carbon::parse($date)->format('d/m/Y');
+                                    
+                                    $schema[] = Grid::make(3)
+                                        ->schema([
+                                            Placeholder::make("date_label_{$date}")
+                                                ->label('Tanggal')
+                                                ->content($formattedDate),
+                                            
+                                            DatePicker::make("edit_date_{$date}")
+                                                ->label('Ubah Ke')
+                                                ->default($date),
+                                            
+                                            Radio::make("action_{$date}")
+                                                ->label('Aksi')
+                                                ->options([
+                                                    'update' => 'Ubah',
+                                                    'delete' => 'Hapus',
+                                                    'none' => 'Biarkan'
+                                                ])
+                                                ->default('none')
+                                                ->inline()
+                                                ->inlineLabel(false)
+                                        ]);
+                                }
+                                
+                                return $schema;
+                            })
+                    ])
+                    ->action(function (array $data) {
+                        $updateCount = 0;
+                        $deleteCount = 0;
+                        
+                        foreach ($data as $key => $value) {
+                            if (strpos($key, 'action_') === 0) {
+                                $date = substr($key, 7); // Extract date from field name
+                                
+                                if ($value === 'update') {
+                                    $newDate = $data["edit_date_{$date}"] . ' 00:00:00';
+                                    
+                                    // Get all records for the old date
+                                    $records = AbsenMapel::whereDate('waktu_absen', $date)->get();
+                                    
+                                    foreach ($records as $record) {
+                                        $record->update([
+                                            'waktu_absen' => $newDate
+                                        ]);
+                                    }
+                                    
+                                    $updateCount += $records->count();
+                                }
+                                elseif ($value === 'delete') {
+                                    // Delete all records for this date
+                                    $deleteCount += AbsenMapel::whereDate('waktu_absen', $date)->delete();
+                                }
+                            }
+                        }
+                        
+                        Notification::make()
+                            ->title('Tanggal absensi berhasil dikelola')
+                            ->body("{$updateCount} data diperbarui dan {$deleteCount} data dihapus")
+                            ->success()
+                            ->send();
+                    })
             ])
+            ->columns(
+                self::getColumn()
+            )
+            ->modifyQueryUsing(fn ($query) => $query->with('absenmapel'))
+            ->recordUrl(null)
             ->filters([
-                // Tambahkan filter jika perlu
+                Filter::make('date')
+                    ->form([
+                        DatePicker::make('created_from')
+                            ->label('Dari Tanggal'),
+                        DatePicker::make('created_until')
+                            ->label('Sampai Tanggal'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereHas(
+                                    'absenmapel',
+                                    fn (Builder $query) => $query->whereDate('waktu_absen', '>=', $date)
+                                )
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereHas(
+                                    'absenmapel',
+                                    fn (Builder $query) => $query->whereDate('waktu_absen', '<=', $date)
+                                )
+                            );
+                    })
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                // Individual student actions if needed
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Bulk actions if needed
             ]);
     }
 

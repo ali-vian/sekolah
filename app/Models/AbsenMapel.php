@@ -23,4 +23,8 @@ class AbsenMapel extends Model
     public function student(){
         return $this->belongsTo(Student::class, 'student_id');
     }
+
+    public function jadwal(){
+        return $this->belongsTo(Jadwal::class, 'jadwal_id');
+    }
 }

@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\AbsenMapel>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\AbsenGuru>
  */
-class AbsenMapelFactory extends Factory
+class AbsenGuruFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,7 +19,7 @@ class AbsenMapelFactory extends Factory
         return [
             //
             'jadwal_id' => $this->faker->numberBetween(3, 6),
-            'student_id' => $this->faker->numberBetween(3, 6),
+            'guru_id' => $this->faker->numberBetween(1, 4),
             'status' => $this->faker->randomElement(['Hadir', 'Absen','Izin','Sakit']),
             'keterangan' => $this->faker->sentence(),
             'waktu_absen' => $this->faker->dateTimeThisYear(),

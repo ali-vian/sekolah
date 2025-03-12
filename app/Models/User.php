@@ -40,6 +40,11 @@ class User extends Authenticatable #implements FilamentUser
         return $this->hasMany(\App\Models\Jadwal::class, 'guru_id', 'id');
     }
 
+    public function absenGuru()
+    {
+        return $this->hasMany(\App\Models\AbsenGuru::class, 'guru_id', 'id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

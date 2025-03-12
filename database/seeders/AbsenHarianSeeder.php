@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class AbsenMapelSeeder extends Seeder
+class AbsenHarianSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +13,7 @@ class AbsenMapelSeeder extends Seeder
     public function run(): void
     {
         //
-        \App\Models\AbsenMapel::factory(5)->create();
+        \App\Models\AbsenHarian::factory(10)->create();
+
     }
 }

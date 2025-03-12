@@ -34,10 +34,12 @@
                                 @foreach ($kelas as $id => $nama_kelas)
                                     @php
                                         $jadwalKelas = $jadwalPerJam->where('kelas_id', $id);
-                                        $mapelUnik = $jadwalKelas->unique('mapel_id');
+                                        // $mapelUnik = $jadwalKelas->unique('mapel_id');
+                                        $mapelUnik = $jadwalKelas;
                                     @endphp
                                     @if ($mapelUnik->count() == 1 && $jadwalKelas->count() > 0)
-                                        @if ($loop->first || ($mapelUnik->isNotEmpty() && isset($prevMapelId) && $mapelUnik->first()->mapel_id !== $prevMapelId))
+                                        {{-- @if ($loop->first || ($mapelUnik->isNotEmpty() && isset($prevMapelId) && $mapelUnik->first()->mapel_id !== $prevMapelId)) --}}
+                                        @if ($loop->first || ($mapelUnik->isNotEmpty()  && $mapelUnik->first()->mapel_id !== $prevMapelId))
                                             <td rowspan="{{ $jadwalKelas->count() }}" class="px-4 py-2 text-gray-700 text-sm">
                                                 @if($mapelUnik->first() && $mapelUnik->first()->mapel)
                                                     <a href="{{ $mapelUnik->first()->id ?? '#' }}/edit" class="text-blue-600 hover:underline">

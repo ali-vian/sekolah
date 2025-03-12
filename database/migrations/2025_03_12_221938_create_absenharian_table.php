@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('absenmapel', function (Blueprint $table) {
+        Schema::create('absenharian', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('jadwal_id')->constrained('jadwal');
             $table->foreignId('student_id')->constrained('student');
-            $table->enum('status', ['Hadir', 'Absen','Izin','Sakit','-']);
+            $table->string('status');
             $table->dateTime('waktu_absen');
-            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('absenmapel');
+        Schema::dropIfExists('absenharian');
     }
 };

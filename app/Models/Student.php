@@ -19,14 +19,19 @@ class Student extends Model
     ];
 
     public function kelas()
-{
-    return $this->belongsTo(Kelas::class, 'kelas_id'); 
-}
+    {
+        return $this->belongsTo(Kelas::class, 'kelas_id'); 
+    }
 
-public function absenmapel()
-{
-    return $this->hasMany(AbsenMapel::class, 'student_id');
+    public function absenmapel()
+    {
+        return $this->hasMany(AbsenMapel::class, 'student_id');
 
-}
+    }
 
+    public function absenharian()
+    {
+        return $this->hasMany(AbsenHarian::class, 'student_id');
+
+    }
 }

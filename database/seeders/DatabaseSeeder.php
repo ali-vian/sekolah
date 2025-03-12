@@ -39,5 +39,8 @@ class DatabaseSeeder extends Seeder
         $this->call(KelasSeeder::class);
         $this->call(MapelSeeder::class);
         $this->call(WaktuSeeder::class);
+        $this->call(AbsenHarianSeeder::class);
+        $this->call(AbsenGuruSeeder::class);
+        
     }
 }
