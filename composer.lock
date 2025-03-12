@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "69265a3cf506ff46adca8dfd699d2157",
+    "content-hash": "125c578cea7487960da22fe9bedffe95",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1853,6 +1853,83 @@
                 }
             ],
             "time": "2024-07-20T21:45:45+00:00"
+        },
+        {
+            "name": "guava/filament-icon-select-column",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GuavaCZ/filament-icon-select-column.git",
+                "reference": "dbb6d2859260d1f67343aaed4048b56fe3c25adb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GuavaCZ/filament-icon-select-column/zipball/dbb6d2859260d1f67343aaed4048b56fe3c25adb",
+                "reference": "dbb6d2859260d1f67343aaed4048b56fe3c25adb",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.2",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.14.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.8|^8.1",
+                "nunomaduro/larastan": "^2.0.1",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "FilamentIconSelectColumn": "Guava\\FilamentIconSelectColumn\\Facades\\FilamentIconSelectColumn"
+                    },
+                    "providers": [
+                        "Guava\\FilamentIconSelectColumn\\FilamentIconSelectColumnServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Guava\\FilamentIconSelectColumn\\": "src/",
+                    "Guava\\FilamentIconSelectColumn\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lukas Frey",
+                    "email": "lukas.frey@guava.cz",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Adds a icon select (via dropdown) column to your filament tables.",
+            "homepage": "https://github.com/GuavaCZ/filament-icon-select-column",
+            "keywords": [
+                "Guava",
+                "filament-icon-select-column",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/GuavaCZ/filament-icon-select-column/issues",
+                "source": "https://github.com/GuavaCZ/filament-icon-select-column/tree/1.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/GuavaCZ",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-02-25T14:17:50+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

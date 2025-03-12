@@ -10,6 +10,7 @@ class AbsenMapel extends Model
 
     //
     use HasFactory;
+
     protected $table = 'absenmapel';
     protected $fillable = [
         'jadwal_id',

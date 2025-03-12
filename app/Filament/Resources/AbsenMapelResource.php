@@ -118,6 +118,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TimePicker;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\SelectColumn;
 
 
 class AbsenMapelResource extends Resource
@@ -151,14 +152,42 @@ class AbsenMapelResource extends Resource
                 ->sortable()
                 ->searchable(),
 
-            TextColumn::make('01/03/2025')
-                ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-01')),
+            // TextColumn::make('01/03/2025')
+            //     ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-01')),
 
-            TextColumn::make('08/03/2025')
-                ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-08')),
+            // TextColumn::make('08/03/2025')
+            //     ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-08')),
 
-            TextColumn::make('15/03/2025')
-                ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-15'))
+            // TextColumn::make('15/03/2025')
+            //     ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-15')),
+
+SelectColumn::make('01/03/2025')
+    ->options([
+        'hadir' => 'Hadir',
+        'izin' => 'Izin',
+        'alpha' => 'Alpha',
+    ])
+    ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-01'))
+    ->afterStateUpdated(fn ($record, $state) => self::updateStatus($record, '2025-03-01', $state)),
+
+SelectColumn::make('08/03/2025')
+    ->options([
+        'hadir' => 'Hadir',
+        'izin' => 'Izin',
+        'alpha' => 'Alpha',
+    ])
+    ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-08'))
+    ->afterStateUpdated(fn ($record, $state) => self::updateStatus($record, '2025-03-08', $state)),
+
+SelectColumn::make('15/03/2025')
+    ->options([
+        'hadir' => 'Hadir',
+        'izin' => 'Izin',
+        'alpha' => 'Alpha',
+    ])
+    ->getStateUsing(fn ($record) => self::getStatus($record, '2025-03-15'))
+    ->afterStateUpdated(fn ($record, $state) => self::updateStatus($record, '2025-03-15', $state)),
+
             ])
             ->filters([
                 // Tambahkan filter jika perlu

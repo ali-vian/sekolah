@@ -14,11 +14,13 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Grouping\Group;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentColor;
-use App\Models\Waktu;
+use App\Models\Kelas;
+use App\Models\About;
 use App\Filament\Resources\JadwalResource\Widgets\CustomTableWidget;
  
 FilamentColor::register([
@@ -30,15 +32,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class JadwalResource extends Resource
 {
-    public static function getWidgets(): array
-    {
-        return [
-            CustomTableWidget::class,
-        ];
-    }
+
     protected static ?string $model = Jadwal::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar';
+
+    protected static ?string $navigationLabel = 'Jadwal Pelajaran';
 
     public static function form(Form $form): Form
     {
@@ -115,6 +114,7 @@ class JadwalResource extends Resource
 
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -140,6 +140,7 @@ class JadwalResource extends Resource
             'index' => Pages\ListJadwals::route('/'),
             'create' => Pages\CreateJadwal::route('/create'),
             'edit' => Pages\EditJadwal::route('/{record}/edit'),
+            'custom-table' => Pages\CustomTableView::route('/custom-table'),
         ];
     }
 }
