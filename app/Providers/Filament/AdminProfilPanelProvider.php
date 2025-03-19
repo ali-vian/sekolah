@@ -43,8 +43,10 @@ class AdminProfilPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+                Widgets\AccountWidget::class,
+                \App\Filament\Resources\Resource\Widgets\TodayScheduleWidget::class,
+                \App\Filament\Resources\Resource\Widgets\JadwalDashboard::class,
             ])
             ->spa()
             ->middleware([
