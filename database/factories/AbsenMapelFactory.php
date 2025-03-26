@@ -21,6 +21,7 @@ class AbsenMapelFactory extends Factory
             'jadwal_id' => $this->faker->numberBetween(3, 6),
             'student_id' => $this->faker->numberBetween(3, 6),
             'status' => $this->faker->randomElement(['Hadir', 'Absen','Izin','Sakit']),
+            'mapel_id' => $this->faker->numberBetween(3, 6),
             'keterangan' => $this->faker->sentence(),
             'waktu_absen' => $this->faker->dateTimeThisYear(),
         ];

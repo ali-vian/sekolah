@@ -5,7 +5,7 @@
     <div class="overflow-x-auto">
         <table border="1" cellpadding="5" cellspacing="0" class="w-full">
             <thead>
-                <tr>
+                <tr class="text-sm">
                     <th>Hari</th>
                     <th>Jam</th>
                     @foreach ($this->kelas as $id => $nama_kelas)
@@ -13,7 +13,7 @@
                     @endforeach
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="text-sm">
                 @foreach ($this->hari as $h)
                     @if (isset($this->data[$h]))
                         @php

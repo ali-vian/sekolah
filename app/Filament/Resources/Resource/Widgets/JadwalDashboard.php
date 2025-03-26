@@ -18,7 +18,7 @@ class JadwalDashboard extends Widget
     public function mount(): void
     {
         $this->kelas = Kelas::pluck('nama_kelas', 'id')->toArray();
-        $this->hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        $this->hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu','Minggu'];
         $this->data = Jadwal::with(['kelas', 'mapel', 'waktu'])
             ->get()
             ->groupBy('hari');

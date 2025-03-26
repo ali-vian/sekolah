@@ -34,7 +34,7 @@ class AbsenMapelResource extends Resource
     }
 
     public static function getColumn(){
-        $dates = AbsenMapel::distinct()->where('jadwal_id',12)->pluck('waktu_absen')->sort()->map(function ($date) {
+        $dates = AbsenMapel::distinct()->where('jadwal_id',4)->pluck('waktu_absen')->sort()->map(function ($date) {
             return Carbon::parse($date);
         });
 
@@ -54,21 +54,21 @@ class AbsenMapelResource extends Resource
                 ->options([
                     'Hadir' => 'Hadir',
                     'Sakit' => 'Sakit',
-                    'Ijin' => 'Ijin',
+                    'Izin' => 'Izin',
                     'Absen' => 'Absen',
                     '-' => '-',
                 ])
                 ->icons([
                     'Hadir' => 'heroicon-s-check-circle',
                     'Sakit' => 'heroicon-s-plus-circle',
-                    'Ijin' => 'heroicon-s-information-circle',
+                    'Izin' => 'heroicon-s-information-circle',
                     'Absen' => 'heroicon-s-x-circle',
                     '-' => 'heroicon-s-minus-circle',
                 ])
                 ->colors([
                     'Hadir' => 'success',
                     'Sakit' => 'primary',
-                    'Ijin' => 'warning',
+                    'Izin' => 'warning',
                     'Absen' => 'danger',
                     // '-' => 'gray',
                 ])
@@ -94,6 +94,7 @@ class AbsenMapelResource extends Resource
                             'student_id' => $record->id,
                             'waktu_absen' => $dateFormatted . ' 00:00:00',
                             'jadwal_id' => 1,
+                            'mapel_id'=>1,
                             'status' => $state,
                         ]);
                     }

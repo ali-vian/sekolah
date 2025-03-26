@@ -34,7 +34,7 @@
                                 type="radio" 
                                 name="data.student_{{ $student->id }}" 
                                 id="student_{{ $student->id }}_ijin"
-                                value="Ijin" 
+                                value="Izin" 
                                 wire:model="data.student_{{ $student->id }}"
                                 class="text-primary-600 focus:ring-primary-500 h-4 w-4 cursor-pointer"
                             >
