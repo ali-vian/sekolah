@@ -18,6 +18,11 @@ class Jadwal extends Model
         'guru_id'
     ];
 
+    public function absenmapel()
+    {
+        return $this->hasMany(AbsenMapel::class, 'jadwal_id', 'id');
+    }
+
     public function waktu()
     {
         return $this->belongsTo(Waktu::class, 'waktu_id', 'id');

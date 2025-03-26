@@ -25,6 +25,6 @@ class AbsenMapel extends Model
     }
 
     public function jadwal(){
-        return $this->belongsTo(Jadwal::class, 'jadwal_id');
+        return $this->hasMany(Jadwal::class, 'jadwal_id');
     }
 }
