@@ -14,9 +14,9 @@ class AnnouncementController extends Controller
         return view('pengumuman', ['pengumuman' => $anoun]);
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        return view('post-pengumuman', ['post' => Announcement::find($id)]);
+        return view('post-pengumuman', ['post' => Announcement::where('slug', $slug)->firstOrFail()]);
     }
 
     public function search(Request $keyword) {

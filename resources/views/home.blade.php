@@ -83,7 +83,7 @@
                 </button>
                 <div id="slider"  class="flex gap-6 md:gap-8 overflow-x-auto px-12 py-4 scrollbar-hide scroll-smooth">
                     @foreach ($jurusan as $i => $jrsn )
-                    <a href="jurusan/{{ $jrsn->id }}">
+                    <a href="jurusan/{{ $jrsn->slug }}">
                         <div data-aos="fade-up"
                             data-aos-delay="{{ 12-$i*2 }}00"
                             data-aos-duration="700"
@@ -140,7 +140,7 @@
                 <div class="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
                     @foreach ($beritas as $i => $berita )
                     <div data-aos="{{ $i%2==0 ? "zoom-in" : "zoom-out" }}" data-aos-duration="2000" class="max-w-sm bg-white border border-gray-200 overflow-hidden rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-                        <a class=" overflow-hidden" href="/post/{{ $berita->id }}">
+                        <a class=" overflow-hidden" href="/post/{{ $berita->slug }}">
                             <img class="h-80 w-96 object-cover" src="{{ asset("storage/".$berita->image) }}" alt="" />
                         </a>
                         <div class="p-5">
@@ -148,7 +148,7 @@
                                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $berita->title }}</h5>
                             </a>
                             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ Str::limit($berita->content,80) }}</p>
-                            <a href="/post/{{ $berita->id }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <a href="/post/{{ $berita->slug }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 Selengkapnya
                                 <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>

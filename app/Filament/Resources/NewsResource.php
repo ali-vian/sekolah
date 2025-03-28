@@ -11,15 +11,12 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextArea;
-use Filament\Forms\Components\Image;
 use Filament\Forms\Components\RichEditor;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Set;
 
 class NewsResource extends Resource
 {
@@ -44,7 +41,10 @@ class NewsResource extends Resource
                 TextInput::make('title')
                     ->required()
                     ->placeholder('Title')
-                    ->autofocus(),
+                    ->maxLength(255)
+                    ->live(debounce: 500)
+                    ->afterStateUpdated(fn (Set $set , ?string $state) => $set('slug', \Str::slug($state))),
+                TextInput::make('slug')->required()->unique(ignorable: fn (?News $record) => $record),
                 TextInput::make('category')
                     ->required()
                     ->placeholder('Category'),
@@ -68,6 +68,7 @@ class NewsResource extends Resource
             ->columns([
                 //
                 ImageColumn::make('image'),
+               
                 TextColumn::make('title')
                     ->searchable()
                     ->limit(50),
@@ -78,6 +79,7 @@ class NewsResource extends Resource
                     ->searchable()
                     ->limit(100)
                     ->wrap(),
+                TextColumn::make('slug')->limit(20),
             ])
             ->filters([
                 //

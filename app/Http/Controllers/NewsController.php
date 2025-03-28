@@ -14,9 +14,9 @@ class NewsController extends Controller
         return view('berita', ['berita' => $berita]);
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        return view('post', ['post' => News::find($id)]);
+        return view('post', ['post' => News::where('slug',$slug)->firstOrFail()]);
     }
 
     public function search(Request $keyword)

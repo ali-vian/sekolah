@@ -9,13 +9,29 @@ class Student extends Model
 {
     //
     use HasFactory;
+    public $timestamps = false;
     protected $table = 'student';
     protected $fillable = [
-        'name',
-        'nis',
-        'email',
+        'tahun_masuk',
+        'nama',
+        'kelamin',
+        'asal_sd',
+        'asal_smp',
+        'nik',
+        'nisn',
+        'urut_yayasan',
+        'urut_jurusan',
+        'kode_jurusan',
+        'kelas',
+        'jurusan',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'ibu',
+        'ayah',
+        'alamat',
+        'anak_ke',
+        'status',
         'kelas_id',
-        'jenis_kelamin',
     ];
 
     public function kelas()

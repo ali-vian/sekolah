@@ -14,9 +14,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Set;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class JurusanResource extends Resource
 {
@@ -35,13 +34,18 @@ class JurusanResource extends Resource
                 
                 TextInput::make('name')
                     ->required()
-                    ->placeholder('Nama'),
-                TextInput::make('slug')
-                    ->required()
-                    ->placeholder('Slug'),
+                    ->placeholder('Nama')
+                    ->maxLength(255)
+                    ->live(debounce: 500)
+                    ->afterStateUpdated(fn (Set $set , ?string $state) => $set('slug', \Str::slug($state))),
+                TextInput::make('slug')->required()->unique(ignorable: fn (?Jurusan $record) => $record)
+                    ->validationMessages([
+                    'unique' => 'Slug wajib unik.',]),
                 RichEditor::make('description')
                     ->required()
-                    ->placeholder('Deskripsi'),
+                    ->placeholder('Deskripsi')
+                    ->validationMessages([
+                        'required' => 'Deskripsi wajib diisi.',]),
                 FileUPload::make('icon')
                     ->image()
                     ->imageEditor()
@@ -69,10 +73,10 @@ class JurusanResource extends Resource
                 ImageColumn::make('icon'),
                 TextColumn::make('name'),
                 TextColumn::make('description')->limit(50),
-                TextColumn::make('slug')->limit(50),
                 TextColumn::make('prospek_kerja')->limit(50),
                 TextColumn::make('kompetensi')->limit(50),
-                ImageColumn::make('gambar')
+                ImageColumn::make('gambar'),
+                TextColumn::make('slug')
             ])
             ->filters([
                 //

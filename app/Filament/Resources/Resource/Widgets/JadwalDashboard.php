@@ -28,7 +28,7 @@ class JadwalDashboard extends Widget
          $akhirMinggu = Carbon::now()->endOfWeek();
          
          // Ambil semua jadwal_id yang sudah melakukan absen minggu ini
-         $this->absensiMingguIni = AbsenMapel::whereBetween('created_at', [$mingguIni, $akhirMinggu])
+         $this->absensiMingguIni = AbsenMapel::whereBetween('waktu_absen', [$mingguIni, $akhirMinggu])
              ->pluck('jadwal_id')
              ->toArray();
     }

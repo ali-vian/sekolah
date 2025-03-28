@@ -11,7 +11,7 @@ class HomeController extends Controller
             'kerjasamas' => \App\Models\Kerjasama::where('status', true)->get(),
             'beritas' => \App\Models\News::all()->take(3),
             'about' => \App\Models\About::first(),
-            'jurusan'=> \App\Models\Jurusan::all(['name','icon','id']),
+            'jurusan'=> \App\Models\Jurusan::all(['name','icon','slug']),
             'ekstrakulikuler' => \App\Models\Extrakulikuler::all()
         ]);
     }
@@ -23,8 +23,8 @@ class HomeController extends Controller
         ]);
     }
 
-    public function jurusan($id){
-        return view('jurusan',['jurusan' => \App\Models\Jurusan::find($id)]);
+    public function jurusan($slug){
+        return view('jurusan',['jurusan' => \App\Models\Jurusan::where('slug',$slug)->firstOrFail()]);
     }
 
 }

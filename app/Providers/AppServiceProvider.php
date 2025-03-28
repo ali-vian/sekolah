@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        $jurusan = \App\Models\Jurusan::all(['name','id']);
+        $jurusan = \App\Models\Jurusan::all(['name','slug']);
         View::share('jurusaNav', $jurusan);
         
     }

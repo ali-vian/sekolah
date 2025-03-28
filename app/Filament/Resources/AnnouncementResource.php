@@ -18,8 +18,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Set;
 
 class AnnouncementResource extends Resource
 {
@@ -42,7 +41,13 @@ class AnnouncementResource extends Resource
                 TextInput::make('title')
                     ->required()
                     ->placeholder('Title')
-                    ->autofocus(),
+                    ->maxLength(255)
+                    ->live(debounce: 500)
+                    ->afterStateUpdated(fn (Set $set , ?string $state) => $set('slug', \Str::slug($state))),
+                TextInput::make('slug')
+                    ->required()
+                    ->placeholder('Slug')
+                    ->unique(ignorable: fn (?Announcement $record) => $record),
                 TextInput::make('author')
                     ->required()
                     ->placeholder('Author'),
@@ -81,6 +86,7 @@ class AnnouncementResource extends Resource
                     ->searchable()
                     ->limit(100)
                     ->wrap(),
+                TextColumn::make('slug')
                 
             ])
             ->filters([

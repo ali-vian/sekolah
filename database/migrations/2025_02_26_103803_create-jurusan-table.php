@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->string('icon');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->text('prospek_kerja');
             $table->text('kompetensi');
             $table->string('gambar');

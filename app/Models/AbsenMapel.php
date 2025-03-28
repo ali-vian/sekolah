@@ -15,7 +15,6 @@ class AbsenMapel extends Model
     protected $fillable = [
         'jadwal_id',
         'student_id',
-        'mapel_id',
         'status',
         'keterangan',
         'waktu_absen'
@@ -28,8 +27,5 @@ class AbsenMapel extends Model
     public function jadwal(){
         return $this->hasMany(Jadwal::class, 'jadwal_id');
     }
-
-    public function mapel(){
-        return $this->hasMany(Mapel::class, 'mapel_id');
-    }
+    
 }

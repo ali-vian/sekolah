@@ -34,7 +34,7 @@ class AbsenMapelResource extends Resource
     }
 
     public static function getColumn(){
-        $dates = AbsenMapel::distinct()->where('jadwal_id',4)->pluck('waktu_absen')->sort()->map(function ($date) {
+        $dates = AbsenMapel::distinct()->where('jadwal_id',5)->pluck('waktu_absen')->sort()->map(function ($date) {
             return Carbon::parse($date);
         });
 
@@ -94,7 +94,6 @@ class AbsenMapelResource extends Resource
                             'student_id' => $record->id,
                             'waktu_absen' => $dateFormatted . ' 00:00:00',
                             'jadwal_id' => 1,
-                            'mapel_id'=>1,
                             'status' => $state,
                         ]);
                     }
