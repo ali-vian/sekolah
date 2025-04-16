@@ -25,8 +25,8 @@
         </div> 
         <div class="grid gap-8 lg:grid-cols-2">
             @foreach ($berita as $brt )
-            <article class=" bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md dark:bg-gray-800 dark:border-gray-700 flex flex-col sm:flex-row">
-                <img class="w-full sm:w-48" src="{{ asset("storage/".$brt->image) }}" alt="img">
+            <article class=" bg-white rounded-lg border sm:max-h-52 border-gray-200 overflow-hidden shadow-md dark:bg-gray-800 dark:border-gray-700 flex flex-col sm:flex-row">
+                <img class="w-full h-full sm:w-48 object-cover" src="{{ asset("storage/".$brt->image) }}" alt="img">
                 <div class="p-6">
                     <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><a href="#">{{ Str::limit($brt->title, 30) }}</a></h2>
                     <p class="mb-5 font-light text-gray-500 dark:text-gray-400">{{ Str::limit($brt->content,130) }}</p>

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('prospek_kerja');
             $table->text('kompetensi');
-            $table->string('gambar');
+            $table->json('gambar')->nullable();
             $table->timestamps();
         });
     }

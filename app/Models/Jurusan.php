@@ -10,6 +10,9 @@ class Jurusan extends Model
     //
     use HasFactory;
     protected $table = 'jurusan';
+    protected $casts = [
+        'gambar' => 'array', // Konversi otomatis JSON ⇄ array
+    ];
     protected $fillable = [
         'name',
         'description',

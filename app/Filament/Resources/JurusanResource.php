@@ -6,6 +6,7 @@ use App\Filament\Resources\JurusanResource\Pages;
 use App\Filament\Resources\JurusanResource\RelationManagers;
 use App\Models\Jurusan;
 use Filament\Forms;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -57,11 +58,14 @@ class JurusanResource extends Resource
                 RichEditor::make('kompetensi')
                     ->required()
                     ->placeholder('Kompetensi'),
-                FileUpload::make('gambar')
-                    ->image()
-                    ->imageEditor()
-                    ->imageEditorAspectRatios(['1:1'])
-                    ->required(),
+                Repeater::make('gambar')
+                    ->schema([
+                        FileUpload::make('foto')
+                            ->directory('jurusan/images')
+                            ->image()
+                            ->maxSize(1024) // Maksimal 1MB
+                            ->label('Upload Image')
+                    ])->addActionLabel('Tambah Gambar'),
             ]);
     }
 
@@ -75,7 +79,15 @@ class JurusanResource extends Resource
                 TextColumn::make('description')->limit(50),
                 TextColumn::make('prospek_kerja')->limit(50),
                 TextColumn::make('kompetensi')->limit(50),
-                ImageColumn::make('gambar'),
+                TextColumn::make('gambar')
+                    ->label('Gambar')
+                    ->html() // Aktifkan mode HTML untuk gambar
+                    ->getStateUsing(function ($record) {
+                        $gambars = is_string($record->gambar) ? json_decode($record->gambar, true) : $record->gambar;
+                        return collect($gambars)
+                            ->map(fn ($item) => "<img src='/storage/{$item['foto']}' width='40' height='40'>")
+                            ->implode(" ");
+                    }),
                 TextColumn::make('slug')
             ])
             ->filters([

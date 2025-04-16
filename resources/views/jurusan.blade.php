@@ -37,7 +37,15 @@
   <h2 class="mb-4 text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white">Profesi / Bidang Kerja</h2>
     {!! $jurusan->prospek_kerja !!}
 </article>
-<img class="w-1/2" src="{{ asset("storage/".$jurusan->gambar) }}" alt="">
+
+
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+  @foreach ($jurusan->gambar as $foto )
+    <div>
+        <img class="h-auto max-w-full rounded-lg" src="{{ asset("storage/".$foto['foto']) }}" alt="">
+    </div>
+  @endforeach
+</div>
 
     </div>
 

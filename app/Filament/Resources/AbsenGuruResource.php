@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AbsenGuruResource extends Resource
 {
+    protected static ?string $navigationGroup = 'Absen';
     protected static ?string $model = AbsenGuru::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

@@ -15,6 +15,7 @@ class AbsenMapel extends Model
     protected $fillable = [
         'jadwal_id',
         'student_id',
+        // 'mapel_id',
         'status',
         'keterangan',
         'waktu_absen'
