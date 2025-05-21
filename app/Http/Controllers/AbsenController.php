@@ -73,14 +73,33 @@ class AbsenController extends Controller
                 'tapel_id' => 'required|exists:tapels,id',
             ]);
 
-            AbsenGuru::updateOrCreate(
-                [
-                    'guru_id' => $validated['guru_id'],
-                    'waktu_absen' => $validated['waktu_absen'],
-                    'tapel_id' => $validated['tapel_id']
-                ],
-                ['status' => $validated['status']]
-            );
+               $tanggal = $validated['waktu_absen'];
+                $dayOfWeek = \Carbon\Carbon::parse($tanggal)->dayOfWeek;
+
+                if ( $dayOfWeek == 0) {
+                    return response()->json(['message' => 'Absen tidak dapat dilakukan pada Minggu.'], 422);
+                }
+                $tapelId = $validated['tapel_id'];
+                
+                $isHoliday = DB::table('liburs')
+                            ->where('tapel_id', $tapelId)
+                            ->whereDate('tanggal_mulai', '<=', $tanggal)
+                            ->whereDate('tanggal_selesai', '>=', $tanggal)
+                            ->exists();
+
+            if ($isHoliday) {
+                return response()->json(['message' => 'Absen tidak dapat dilakukan pada hari libur.'], 422);
+            }
+
+
+            $updated = AbsenGuru::where('guru_id', $validated['guru_id'])
+            ->whereDate('waktu_absen', Carbon::parse($validated['waktu_absen'])->toDateString())
+            ->where('tapel_id', $validated['tapel_id'])
+            ->update(['status' => $validated['status']]);
+            if ($updated === 0) {
+                AbsenGuru::create($validated);
+            }
+
 
             return response()->json(['message' => 'Status absen disimpan']);
     }
@@ -95,7 +114,7 @@ class AbsenController extends Controller
     {
         $data['tapels'] = Tapel::all();
         $data['gurus'] = User::join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-            ->where('model_has_roles.role_id', 3)
+            ->where('model_has_roles.role_id', 3)->orWhere('model_has_roles.role_id', 4)
             ->get();
         
             
@@ -106,81 +125,68 @@ class AbsenController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        // dd($request->all());
+    // public function store(Request $request)
+    // {
+    //     // dd($request->all());
 
-        $val = $request->validate([
-            'guru_id' => 'array|required',
-            'guru_id.*' => 'exists:users,id',
-            'tapel_id' => 'required|exists:tapels,id',
-            'waktu_absen' => 'required|date',
-            // 'waktu_absen' => 'required',
-            'status' => 'array|required',
-            'status.*' => 'in:Hadir,Sakit,Izin,Alfa',
-        ]);
+    //     $val = $request->validate([
+    //         'guru_id' => 'array|required',
+    //         'guru_id.*' => 'exists:users,id',
+    //         'tapel_id' => 'required|exists:tapels,id',
+    //         'waktu_absen' => 'required|date',
+    //         // 'waktu_absen' => 'required',
+    //         'status' => 'array|required',
+    //         'status.*' => 'in:Hadir,Sakit,Izin,Alfa',
+    //     ]);
 
-        // dd($val);
+    //     // dd($val);
 
-        // Cek apakah hari yang dipilih adalah Sabtu atau Minggu
-        $tanggal = $val['waktu_absen'];
-        $dayOfWeek = \Carbon\Carbon::parse($tanggal)->dayOfWeek;
+    //     // Cek apakah hari yang dipilih adalah Sabtu atau Minggu
+    //     $tanggal = $val['waktu_absen'];
+    //     $dayOfWeek = \Carbon\Carbon::parse($tanggal)->dayOfWeek;
 
-        if ( $dayOfWeek == 0) {
-            toast('Hari minggu libur','info');
-            return redirect()->back()->withErrors(['tanggal' => 'Absen tidak dapat dilakukan pada hari libur (Sabtu dan Minggu).']);
-        }
-        $tapelId = $val['tapel_id'];
-         $isHoliday = DB::table('liburs')
-                    ->where('tapel_id', $tapelId)
-                    ->whereDate('tanggal_mulai', '<=', $tanggal)
-                    ->whereDate('tanggal_selesai', '>=', $tanggal)
-                    ->exists();
+    //     if ( $dayOfWeek == 0) {
+    //         toast('Hari minggu libur','info');
+    //         return redirect()->back()->withErrors(['tanggal' => 'Absen tidak dapat dilakukan pada hari libur (Sabtu dan Minggu).']);
+    //     }
+    //     $tapelId = $val['tapel_id'];
+    //      $isHoliday = DB::table('liburs')
+    //                 ->where('tapel_id', $tapelId)
+    //                 ->whereDate('tanggal_mulai', '<=', $tanggal)
+    //                 ->whereDate('tanggal_selesai', '>=', $tanggal)
+    //                 ->exists();
 
-    if ($isHoliday) {
-        toast('Hari ini adalah hari libur', 'info');
-        return redirect()->back()->withErrors(['tanggal' => 'Absen tidak dapat dilakukan pada hari libur.']);
-    }
+    // if ($isHoliday) {
+    //     toast('Hari ini adalah hari libur', 'info');
+    //     return redirect()->back()->withErrors(['tanggal' => 'Absen tidak dapat dilakukan pada hari libur.']);
+    // }
 
-        foreach ($val['guru_id'] as  $guruId) {
-            // Cek apakah guru sudah absen pada tanggal yang sama
-            $existingAbsen = AbsenGuru::where('guru_id', $guruId)
-                ->whereDate('waktu_absen', $tanggal)
-                ->first();
+    //     foreach ($val['guru_id'] as  $guruId) {
+    //         // Cek apakah guru sudah absen pada tanggal yang sama
+    //         $existingAbsen = AbsenGuru::where('guru_id', $guruId)
+    //             ->whereDate('waktu_absen', $tanggal)
+    //             ->first();
 
-            if ($existingAbsen) {
-                $existingAbsen->update([
-                    'status' => $val['status'][$guruId],
-                ]);
-            }else{
+    //         if ($existingAbsen) {
+    //             $existingAbsen->update([
+    //                 'status' => $val['status'][$guruId],
+    //             ]);
+    //         }else{
 
-            // Simpan data absen untuk setiap guru
-            AbsenGuru::create([
-                'guru_id' => $guruId,
-                'tapel_id' => $tapelId,
-                'waktu_absen' => $tanggal,
-                'status' => $val['status'][$guruId],
-                'jadwal_id' => '1',
-            ]);
-        }
-        }
+    //         // Simpan data absen untuk setiap guru
+    //         AbsenGuru::create([
+    //             'guru_id' => $guruId,
+    //             'tapel_id' => $tapelId,
+    //             'waktu_absen' => $tanggal,
+    //             'status' => $val['status'][$guruId],
+    //             'jadwal_id' => '1',
+    //         ]);
+    //     }
+    //     }
 
-
-
-
-        // AbsenGuru::create([
-        //     'guru_id' => $request->input('guru_id'),
-        //     'jadwal_id'=> '1',
-        //     // 'tapel_id' => $request->input('tapel_id'),
-        //     'waktu_absen' => $request->input('waktu_absen'),
-        //     // 'jam_masuk' => $request->input('jam_masuk'),
-        //     // 'jam_keluar' => $request->input('jam_keluar'),
-        //     'status' => $request->input('status'),
-        // ]);
-
-        alert()->success('Success', 'berhasil ditambahkan');
-        return redirect()->back()->with('success', 'Absen berhasil ditambahkan.');
-    }
+    //     alert()->success('Success', 'berhasil ditambahkan');
+    //     return redirect()->back()->with('success', 'Absen berhasil ditambahkan.');
+    // }
 
 
 
@@ -258,5 +264,28 @@ class AbsenController extends Controller
 
         return redirect('/admin/tabel_absen/'.$month."_".$year)->with('success', 'Absen berhasil dihapus.');
     }
+
+    public function getStatus(Request $request)
+    {
+        
+        $val = $request->validate([
+            'waktu_absen' => 'required',
+            'tapel_id' => 'required',
+        ]);
+        
+        // format waktu_absen 2025-01-21T11:08 
+        $tanggal = \Carbon\Carbon::parse($request->waktu_absen)->toDateString();
+
+        // dd($tanggal,$request->tapel_id);
+        
+       $absensi = AbsenGuru::whereDate('waktu_absen', $tanggal)
+        ->where('tapel_id', $request->tapel_id)
+        ->pluck('status', 'guru_id');
+
+        
+        // dd($absensi);
+        return response()->json($absensi);
+    }
+
 
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('student_id')->constrained('student');
             $table->string('status');
             $table->dateTime('waktu_absen');
+            $table->foreignId('tapel_id')->constrained('tapels');
             $table->timestamps();
         });
     }

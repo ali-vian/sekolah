@@ -196,5 +196,65 @@ class AbsenHarianController extends Controller
         return redirect('/admin/tabel_absenharian/'.$month."_".$year)->with('success', 'Absen berhasil dihapus.');
     }
 
+    public function getStatus(Request $request)
+    {
+        $val = $request->validate([
+            'waktu_absen' => 'required',
+            'tapel_id' => 'required',
+        ]);
+        
+        // dd($request->all());
+        // format waktu_absen 2025-01-21T11:08 
+        $tanggal = \Carbon\Carbon::parse($request->waktu_absen)->toDateString();
+
+        // dd($tanggal,$request->tapel_id);
+        
+       $absensi = AbsenHarian::whereDate('waktu_absen', $tanggal)
+        ->where('tapel_id', $request->tapel_id)
+        ->pluck('status', 'student_id');
+
+        return response()->json($absensi);
+    }
+
+    public function saveStatus(Request $request)
+    {
+            $validated = $request->validate([
+                'student_id' => 'required|exists:student,id',
+                'status' => 'required|in:Hadir,Izin,Sakit,Alfa',
+                'waktu_absen' => 'required|date',
+                'tapel_id' => 'required|exists:tapels,id',
+            ]);
+
+               $tanggal = $validated['waktu_absen'];
+                $dayOfWeek = \Carbon\Carbon::parse($tanggal)->dayOfWeek;
+
+                if ( $dayOfWeek == 0) {
+                    return response()->json(['message' => 'Absen tidak dapat dilakukan pada Minggu.'], 422);
+                }
+                $tapelId = $validated['tapel_id'];
+                
+                $isHoliday = DB::table('liburs')
+                            ->where('tapel_id', $tapelId)
+                            ->whereDate('tanggal_mulai', '<=', $tanggal)
+                            ->whereDate('tanggal_selesai', '>=', $tanggal)
+                            ->exists();
+
+            if ($isHoliday) {
+                return response()->json(['message' => 'Absen tidak dapat dilakukan pada hari libur.'], 422);
+            }
+
+
+            $updated = AbsenHarian::where('student_id', $validated['student_id'])
+            ->whereDate('waktu_absen', Carbon::parse($validated['waktu_absen'])->toDateString())
+            ->where('tapel_id', $validated['tapel_id'])
+            ->update(['status' => $validated['status']]);
+            if ($updated === 0) {
+                AbsenHarian::create($validated);
+            }
+
+
+            return response()->json(['message' => 'Status absen disimpan']);
+    }
+
 
 }

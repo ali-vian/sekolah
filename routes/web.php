@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/absen/{id}/edit', [AbsenController::class, 'update'])->name('absens.update');
     Route::post('/absen/save-status', [AbsenController::class, 'saveStatus']);
     Route::get('/absen/create', [AbsenController::class, 'create'])->name('absen.create');
+    Route::get('/absen/get-status', [AbsenController::class, 'getStatus']);
 
   
     // rekap
@@ -67,6 +68,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/absenharian/{id}/edit', [AbsenHarianController::class, 'edit'])->name('absenharian.edit');
     Route::put('/absenharian/{id}/edit', [AbsenHarianController::class, 'update'])->name('absenharian.update');
     Route::get('/absenharian/create', [AbsenHarianController::class, 'create'])->name('absenharian.create');
+    Route::get('/absenharian/get-status', [AbsenHarianController::class, 'getStatus']);
+    Route::post('/absenharian/save-status', [AbsenHarianController::class, 'saveStatus']);
 
     // rekap
     Route::get('/admin/rekap_absenharian', [RekapAbsenHarianController::class, 'index'])->name('rekap_absenharian.index');
@@ -79,7 +82,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/absenmapel/{mapel}/{id}', [AbsenMapelController::class, 'destroy'])->name('absenmapel.destroy');
     Route::get('/absenmapel/{mapel}/{id}/edit', [AbsenMapelController::class, 'edit'])->name('absenmapel.edit');
     Route::put('/absenmapel/{mapel}/{id}/edit', [AbsenMapelController::class, 'update'])->name('absenmapel.update');
-    Route::get('/absenmapel/create', [AbsenMapelController::class, 'create'])->name('absenmapel.create');
+    Route::get('/absenmapel/{mapel}/create', [AbsenMapelController::class, 'create'])->name('absenmapel.create');
+    Route::get('/absenmapel/get-status', [AbsenMapelController::class, 'getStatus']);
+    Route::post('/absenmapel/save-status', [AbsenMapelController::class, 'saveStatus']);
     // rekap
     Route::get('/admin/rekap_absenmapel', [RekapAbsenMapelController::class, 'index'])->name('rekap_absenmapel.index');
 

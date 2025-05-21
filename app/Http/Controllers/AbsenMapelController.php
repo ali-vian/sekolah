@@ -220,6 +220,85 @@ class AbsenMapelController extends Controller
     }
 
 
+    public function create($mapel){
+        $data['tapels'] = Tapel::all();
+        $data['students'] =  Student::join('kelas', 'kelas.id', '=', 'student.kelas_id')
+            ->join('jadwal', 'jadwal.kelas_id', '=', 'kelas.id')
+            ->select('student.*', 'kelas.nama_kelas', 'jadwal.mapel_id')
+            ->where('jadwal.id', $mapel)
+            ->get();
+        $data['mapel'] = $mapel;
+        return view('absen.create_absenmapel', $data);
+
+    }
+    
+    public function getStatus(Request $request)
+    {
+        $val = $request->validate([
+            'waktu_absen' => 'required',
+            'tapel_id' => 'required',
+            'jadwal_id' => 'required',
+        ]);
+        
+        // dd($request->all());
+        // format waktu_absen 2025-01-21T11:08 
+        $tanggal = \Carbon\Carbon::parse($request->waktu_absen)->toDateString();
+
+        // dd($tanggal,$request->tapel_id);
+        
+       $absensi = AbsenMapel::whereDate('waktu_absen', $tanggal)
+        ->where('tapel_id', $request->tapel_id)
+        ->where('jadwal_id', $request->jadwal_id)
+        ->pluck('status', 'student_id');
+
+        // dd($absensi);
+
+        return response()->json($absensi);
+    }
+
+    public function saveStatus(Request $request)
+    {
+            $validated = $request->validate([
+                'student_id' => 'required|exists:student,id',
+                'status' => 'required|in:Hadir,Izin,Sakit,Alfa',
+                'waktu_absen' => 'required|date',
+                'tapel_id' => 'required|exists:tapels,id',
+                'jadwal_id' => 'required|exists:jadwal,id',
+            ]);
+
+               $tanggal = $validated['waktu_absen'];
+                $dayOfWeek = \Carbon\Carbon::parse($tanggal)->dayOfWeek;
+
+                if ( $dayOfWeek == 0) {
+                    return response()->json(['message' => 'Absen tidak dapat dilakukan pada Minggu.'], 422);
+                }
+                $tapelId = $validated['tapel_id'];
+                
+                $isHoliday = DB::table('liburs')
+                            ->where('tapel_id', $tapelId)
+                            ->whereDate('tanggal_mulai', '<=', $tanggal)
+                            ->whereDate('tanggal_selesai', '>=', $tanggal)
+                            ->exists();
+
+            if ($isHoliday) {
+                return response()->json(['message' => 'Absen tidak dapat dilakukan pada hari libur.'], 422);
+            }
+
+
+            $updated = AbsenMapel::where('student_id', $validated['student_id'])
+            ->whereDate('waktu_absen', Carbon::parse($validated['waktu_absen'])->toDateString())
+            ->where('tapel_id', $validated['tapel_id'])
+            ->where('jadwal_id', $validated['jadwal_id'])
+            ->update(['status' => $validated['status']]);
+            if ($updated === 0) {
+                AbsenMapel::create($validated);
+            }
+
+
+            return response()->json(['message' => 'Status absen disimpan']);
+    }
+
+
 
     
 }

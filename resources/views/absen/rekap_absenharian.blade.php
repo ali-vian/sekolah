@@ -122,7 +122,7 @@
                         <thead>
                             <tr>
                                 <th>Bulan</th>
-                                <th>Nama Guru</th>
+                                <th>Nama Siswa</th>
                                 <th>NIP/NUPTK</th>
                                 <th>Jumlah Hadir</th>
                                 <th>Jumlah Sakit</th>
@@ -141,8 +141,8 @@
                                     <tr>
                                         <td>{{ \Carbon\Carbon::createFromFormat('Y-m', $month)->translatedFormat('F') }}
                                         </td>
-                                        <td>{{ $student->name }}</td>
-                                        <td>{{ $student->nim . '/' . $student->nuptk }}</td>
+                                        <td>{{ $student->nama }}</td>
+                                        <td>{{ $student->nisn }}</td>
                                         <td>{{ $absens->where('status', 'Hadir')->count() }}</td>
                                         <td>{{ $absens->where('status', 'Sakit')->count() }}</td>
                                         <td>{{ $absens->where('status', 'Izin')->count() }}</td>
@@ -176,8 +176,8 @@
                                     });
                                 @endphp
                                 <tr>
-                                    <td>{{ $student->name }}</td>
-                                    <td>{{ $student->nip . '/' . $student->nuptk }}</td>
+                                    <td>{{ $student->nama }}</td>
+                                    <td>{{ $student->nisn . '/' . $student->nuptk }}</td>
                                     <td>{{ $filteredAbsens->where('status', 'Hadir')->count() }}</td>
                                     <td>{{ $filteredAbsens->where('status', 'Sakit')->count() }}</td>
                                     <td>{{ $filteredAbsens->where('status', 'Izin')->count() }}</td>

@@ -10,7 +10,7 @@
                     <div class="header-title">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="javascript:history.back()">Absen Harian</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:history.back()">Absen Mapel</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Tambah</li>
                             </ol>
                         </nav>
@@ -22,6 +22,7 @@
                            <div class="col-md-6">
                                 <label for="tanggal" class="form-label">Tanggal</label>
                                 <input type="datetime-local" class="form-control" name="waktu_absen" id="tanggal" required>
+                                
                             </div>
                             <div class="col-md-6">
                                 <label for="tapel_id" class="form-label">Tahun Pelajaran</label>
@@ -68,6 +69,8 @@
                                         </td>
                                     @endforeach
 
+                                    
+
                                 </tr>
                             @endforeach
                         </tbody>            
@@ -82,14 +85,15 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
+    const jadwalId = "{{ $mapel }}";
 
-function loadAbsensi() {
+    function loadAbsensi() {
     const waktu = document.getElementById('tanggal').value;
     const tapel = document.getElementById('tapel_id').value;
 
     if (!waktu || !tapel) return;
 
-    fetch(`/absenharian/get-status?waktu_absen=${waktu}&tapel_id=${tapel}`)
+    fetch(`/absenmapel/get-status?waktu_absen=${waktu}&tapel_id=${tapel}&jadwal_id=${ jadwalId }`)
         .then(res => res.json())
         .then(data => {
             // Update radio berdasarkan data
@@ -148,7 +152,7 @@ function addStatusChangeListener(radio) {
 
         container.innerHTML = `<div class="spinner-border spinner-border-sm text-primary" role="status"></div>`;
 
-        fetch('/absenharian/save-status', {
+        fetch('/absenmapel/save-status', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -158,7 +162,8 @@ function addStatusChangeListener(radio) {
                 student_id: studentId,
                 status: status,
                 waktu_absen: waktu,
-                tapel_id: tapel
+                tapel_id: tapel,
+                jadwal_id: jadwalId
             })
         })
             .then(async response => {

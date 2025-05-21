@@ -29,10 +29,10 @@ class CustomTableView extends Page
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('Export')
-                ->url('/')
-                ->icon('heroicon-o-printer')
-                ->color('success'),
+            // Actions\Action::make('Export')
+            //     ->url('/')
+            //     ->icon('heroicon-o-printer')
+            //     ->color('success'),
             Actions\Action::make('back')
             ->color('warning')
             ->label('Kembali')

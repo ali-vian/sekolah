@@ -24,7 +24,7 @@
         use Carbon\Carbon;
     @endphp
 
-    <a href="/kelola_absen" class="btn mt-2">
+    <a href="/admin" class="btn mt-2">
         <i class="bi bi-arrow-left-circle"></i> Kembali
     </a>
 
@@ -76,7 +76,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama Guru</th>
-                                    <th>NIP/NUPTK</th>
+                                    <th>NIP</th>
                                     <th>L/P</th>
                                     @foreach ($dates as $date)
                                         @php
@@ -105,7 +105,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $guru->name }}</td>
-                                        <td>{{ $guru->nip . '/' . $guru->nuptk }}</td>
+                                        <td>{{ $guru->nip }}</td>
                                         <td>{{ $guru->jenis_kelamin }}</td>
                                         
                                         @foreach ($dates as $date)
@@ -130,8 +130,8 @@
                                                         data-bs-target="#detailAbsenModal"
                                                         data-guru-name="{{ $guru->name }}"
                                                         data-tanggal="{{ Carbon::parse($attendance->waktu_absen)->format('d F Y') }}"
-                                                        data-jam-masuk="{{ Carbon::parse($attendance->waktu_absen)->format('H:i') }}"
-                                                        data-status="{{ $attendance->status }}" --}}
+                                                        data-jam-masuk="{{ Carbon::parse($attendance->waktu_absen)->format('H:i') }}"--}}
+                                                        data-status="{{ $attendance->status }}" 
                                                         >
                                                         {{ strtoupper(substr($attendance->status, 0, 1)) }}
                                                     </span>
@@ -153,40 +153,6 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.forEach(function(tooltipTriggerEl) {
-                new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        });
-
-        document.addEventListener("DOMContentLoaded", function () {
-                const form = document.querySelector("form"); // sesuaikan jika form punya ID
-
-                form.addEventListener("submit", function () {
-                    // Hapus semua input hidden sebelumnya
-                    document
-                        .querySelectorAll(".dynamic-guru-id")
-                        .forEach((el) => el.remove());
-
-                    // Ambil semua radio yang terpilih
-                    const checkedRadios = document.querySelectorAll(
-                        ".status-radio:checked"
-                    );
-
-                    checkedRadios.forEach((radio) => {
-                        const guruId = radio.getAttribute("data-guru-id");
-
-                        const hiddenInput = document.createElement("input");
-                        hiddenInput.type = "hidden";
-                        hiddenInput.name = "guru_id[]";
-                        hiddenInput.value = guruId;
-                        hiddenInput.classList.add("dynamic-guru-id");
-
-                        form.appendChild(hiddenInput);
-                    });
-                });
-            });
 
             $(document).ready(function () {
                 // Pastikan DataTable dihancurkan sebelum inisialisasi ulang

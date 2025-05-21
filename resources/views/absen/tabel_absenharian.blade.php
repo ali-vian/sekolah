@@ -18,7 +18,7 @@
         use Carbon\Carbon;
     @endphp
 
-    <a href="/kelola_absenharian" class="btn mt-2">
+    <a href="/admin" class="btn mt-2">
         <i class="bi bi-arrow-left-circle"></i> Kembali
     </a>
 
@@ -42,11 +42,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                     {{-- <a class="btn btn-primary mb-4" href="/absenharian/create">
+                    <a class="btn btn-primary mb-4" href="/absenharian/create">
                         Tambah Absen
-                    </a> --}}
-
-
+                    </a>
                     <div class="mb-3">
                         <label for="statusFilter" class="form-label">Filter Status Absen:</label>
                         <select id="statusFilter" class="form-select" style="width: 200px;">
@@ -63,7 +61,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nama Siswa</th>
-                                    <th>NIK</th>
+                                    <th>NISN</th>
                                     <th>L/P</th>
                                     @foreach ($dates as $date)
                                         @php
@@ -111,10 +109,10 @@
                                                         @elseif ($attendance->status == 'Absen') bg-danger
                                                         @elseif ($attendance->status == 'Izin') bg-warning
                                                         @elseif ($attendance->status == 'Sakit') bg-info @endif"
-                                                        data-bs-toggle="modal" data-bs-target="#detailAbsenModal"
+                                                        {{-- data-bs-toggle="modal" data-bs-target="#detailAbsenModal"
                                                             data-guru-name="{{ $student->name }}"
                                                             data-tanggal="{{ Carbon::parse($attendance->waktu_absen)->format('d F Y') }}"
-                                                            data-jam-masuk="{{ Carbon::parse($attendance->waktu_absen)->format('H:i') }}"
+                                                            data-jam-masuk="{{ Carbon::parse($attendance->waktu_absen)->format('H:i') }}" --}}
                                                             data-status="{{ ucfirst($attendance->status) }}">
                                                             {{ strtoupper(substr($attendance->status, 0, 1)) }}
                                                         </span>
@@ -136,43 +134,7 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.forEach(function(tooltipTriggerEl) {
-                new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        });
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.querySelector("form"); // sesuaikan jika form punya ID
-
-            form.addEventListener("submit", function () {
-                // Hapus semua input hidden sebelumnya
-                document
-                    .querySelectorAll(".dynamic-student-id")
-                    .forEach((el) => el.remove());
-
-                // Ambil semua radio yang terpilih
-                const checkedRadios = document.querySelectorAll(
-                    ".status-radio:checked"
-                );
-
-                checkedRadios.forEach((radio) => {
-                    const studentId = radio.getAttribute("data-student-id");
-
-                    const hiddenInput = document.createElement("input");
-                    hiddenInput.type = "hidden";
-                    hiddenInput.name = "student_id[]";
-                    hiddenInput.value = studentId;
-                    hiddenInput.classList.add("dynamic-student-id");
-
-                    form.appendChild(hiddenInput);
-                });
-            });
-        });
-
         
-
         $(document).ready(function () {
             // Pastikan DataTable dihancurkan sebelum inisialisasi ulang
             var table = $("#datatableStudent").DataTable({

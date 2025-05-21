@@ -8,23 +8,23 @@ function showModal(tanggal) {
 }
 
 // detail absen
-document.addEventListener("DOMContentLoaded", function () {
-    var detailAbsenModal = document.getElementById("detailAbsenModal");
-    detailAbsenModal.addEventListener("show.bs.modal", function (event) {
-        var button = event.relatedTarget;
-        var guruName = button.getAttribute("data-guru-name");
-        var tanggal = button.getAttribute("data-tanggal");
-        var jamMasuk = button.getAttribute("data-jam-masuk");
-        var status = button.getAttribute("data-status");
-        var idAbsen = button.getAttribute("data-id-absen");
+// document.addEventListener("DOMContentLoaded", function () {
+//     var detailAbsenModal = document.getElementById("detailAbsenModal");
+//     detailAbsenModal.addEventListener("show.bs.modal", function (event) {
+//         var button = event.relatedTarget;
+//         var guruName = button.getAttribute("data-guru-name");
+//         var tanggal = button.getAttribute("data-tanggal");
+//         var jamMasuk = button.getAttribute("data-jam-masuk");
+//         var status = button.getAttribute("data-status");
+//         var idAbsen = button.getAttribute("data-id-absen");
 
-        document.getElementById("detailGuruName").textContent = guruName;
-        document.getElementById("detailTanggal").textContent = tanggal;
-        document.getElementById("detailJamMasuk").textContent = jamMasuk;
-        document.getElementById("detailStatus").textContent = status;
-        document.getElementById("detailIdAbsen").textContent = idAbsen;
-    });
-});
+//         document.getElementById("detailGuruName").textContent = guruName;
+//         document.getElementById("detailTanggal").textContent = tanggal;
+//         document.getElementById("detailJamMasuk").textContent = jamMasuk;
+//         document.getElementById("detailStatus").textContent = status;
+//         document.getElementById("detailIdAbsen").textContent = idAbsen;
+//     });
+// });
 
 // Fungsi untuk menampilkan dropdown bulan jika opsi "Per Bulan" dipilih
 function showMonthComboBox(select) {
@@ -62,13 +62,15 @@ function generateRekapTable(id) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // sesuaikan timezone
+if (document.getElementById("tanggal")) {
+    document.addEventListener("DOMContentLoaded", function () {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // sesuaikan timezone
 
-    const formatted = now.toISOString().slice(0, 16); // ambil YYYY-MM-DDTHH:MM
-    document.getElementById("tanggal").value = formatted;
-});
+        const formatted = now.toISOString().slice(0, 16); // ambil YYYY-MM-DDTHH:MM
+        document.getElementById("tanggal").value = formatted;
+    });
+}
 
 let semuaHadir = false;
 

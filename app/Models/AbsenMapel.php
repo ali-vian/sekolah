@@ -15,12 +15,16 @@ class AbsenMapel extends Model
     protected $fillable = [
         'jadwal_id',
         'student_id',
-        // 'mapel_id',
+        'tapel_id',
         'status',
         'keterangan',
         'waktu_absen'
     ];
 
+    public function tapel(){
+        return $this->belongsTo(Tapel::class, 'tapel_id');
+    }
+    
     public function student(){
         return $this->belongsTo(Student::class, 'student_id');
     }
