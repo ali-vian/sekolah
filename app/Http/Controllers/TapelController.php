@@ -54,6 +54,8 @@ class TapelController extends Controller{
         return view('absen.kelola_absen', compact('tapel'));
     }
 
+    
+
     /**
      * Show the form for editing the specified resource.
      */

@@ -55,23 +55,48 @@ class JadwalResource extends Resource
                         'Minggu' => 'Minggu',
                     ])
                     ->required()
-                    ->placeholder('Hari'),
+                    ->placeholder('Pilih hari'),
+                // Select::make('waktu_id')
+                //     ->relationship('waktu', 'nama')
+                //     ->required()
+                //     ->placeholder('Waktu'),
                 Select::make('waktu_id')
-                    ->relationship('waktu', 'nama')
+                    ->relationship(
+                        'waktu', 
+                        'nama', 
+                        fn ($query) => $query->orderBy('waktu_mulai')
+                    )
+                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->nama} ({$record->waktu_mulai} - {$record->waktu_selesai})")
                     ->required()
-                    ->placeholder('Waktu'),
+                    ->placeholder('Pilih waktu')
+                    ->label('Waktu'),
                 Select::make('kelas_id')
                     ->relationship('kelas', 'nama_kelas')
                     ->required()
-                    ->placeholder('Kelas'),
+                    ->placeholder('Pilih kelas')
+                    ->label("Kelas"),
                 Select::make('mapel_id')
-                    ->relationship('mapel', 'nama_mapel')
-                    ->required()
-                    ->placeholder('Mapel'),
+                ->relationship(
+                    'mapel', 
+                    'nama_mapel', 
+                    fn ($query) => $query->orderBy('kode_mapel')
+                )
+                ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->kode_mapel} - {$record->nama_mapel}")
+                ->required()
+                ->placeholder('Pilih mata pelajaran')
+                ->label("Mata Pelajaran"),
+
                 Select::make('guru_id')
+                    ->relationship(
+                        'guru', 
+                        'name', 
+                        fn ($query) => $query->orderBy('kode_guru')
+                    )
+                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->kode_guru} - {$record->name}")
+                ->required()
                     ->relationship('guru', 'name')
                     ->required()
-                    ->placeholder('Guru'),
+                    ->placeholder('Pilih guru'),
             ]);
     }    
 

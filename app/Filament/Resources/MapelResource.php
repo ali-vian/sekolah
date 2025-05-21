@@ -6,6 +6,7 @@ use App\Filament\Resources\MapelResource\Pages;
 use App\Filament\Resources\MapelResource\RelationManagers;
 use App\Models\Mapel;
 use Dom\Text;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -14,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\Action as Act;
 
 class MapelResource extends Resource
 {
@@ -32,26 +34,20 @@ class MapelResource extends Resource
 
                 TextInput::make('kode_mapel')
                     ->required()
-                    ->placeholder('Kode Mapel'),
-                TextInput::make('durasi')
-                    ->required()
-                    ->placeholder('Durasi'),
-                TextInput::make('jurusan')
-                    ->required()
-                    ->placeholder('Jurusan'),
-                Select::make('jenjang')
-                    ->options([
-                        'X' => 'X',
-                        'XI' => 'XI',
-                        'XII' => 'XII',
-                    ])
-                    ->placeholder('Jenjang Kelas'),
+                    ->placeholder('Kode Mapel')
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateActions([
+                Act::make('create')
+                ->label("Buat Mata Pelajaran")
+                ->url(route("filament.adminProfil.resources.mapels.create"))
+                ->icon('heroicon-o-plus')
+                ->button()
+            ])
             ->columns([
                 //
                 TextColumn::make('kode_mapel')
@@ -60,14 +56,8 @@ class MapelResource extends Resource
                 TextColumn::make('nama_mapel')
                     ->searchable()
                     ->label('Nama Mapel'),
-                TextColumn::make('jurusan')
-                    ->label('Jurusan')
-                    ->searchable(),
-                TextColumn::make('jenjang')
-                    ->label('Jenjang Kelas')
-                    ->searchable()
-                    ->sortable(),
             ])
+            
             ->filters([
                 //
             ])

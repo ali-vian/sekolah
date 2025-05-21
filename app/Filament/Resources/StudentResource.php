@@ -7,6 +7,7 @@ use App\Filament\Resources\StudentResource\RelationManagers;
 use App\Models\Student;
 use Dom\Text;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -33,23 +34,47 @@ class StudentResource extends Resource
         return $form
             ->schema([
                 //
-                TextInput::make('name')
+                TextInput::make('tahun_masuk')
+                    ->required(),
+                TextInput::make('nama')
                     ->required()
-                    ->placeholder('Name'),
-                TextInput::make('email')
-                    ->placeholder('Email'),
-                TextInput::make('nis')
-                    ->placeholder('NIS'),
+                    ->placeholder('Nama'),
+                Select::make('jenis_kelamin')
+                    ->options([
+                        'L' => 'Laki-laki',
+                        'P' => 'Perempuan',
+                    ])
+                    ->placeholder('Jenis Kelamin'),
+                TextInput::make('asal_sd'),
+                TextInput::make('asal_smp'),
+                TextInput::make('nik'),
+                TextInput::make('nisn')
+                    ->placeholder('NISN'),
+                TextInput::make('urut_yayasan'),
+                TextInput::make('urut_jurusan'),
+                TextInput::make('kode_jurusan'),
+                TextInput::make('tempat_lahir'),
+                DatePicker::make('tanggal_lahir'),
+                TextInput::make('ibu'),
+                TextInput::make('ayah'),
+                TextInput::make('alamat'),
+                TextInput::make('anak_ke'),
                 Select::make('kelas_id')
                     ->relationship('kelas', 'nama_kelas')
                     ->required()
                     ->placeholder('Kelas'),
-                Select::make('jenis_kelamin')
-                    ->options([
-                        'Laki-laki' => 'Laki-laki',
-                        'Perempuan' => 'Perempuan',
-                    ])
-                    ->placeholder('Jenis Kelamin'),
+                Select::make('status')
+                ->options([
+                    0 => 0,
+                    1 => 1,
+                    2 => 2,
+                    3 => 3,
+                    4 => 4,
+                    5 => 6,
+                
+                ])
+                
+                
                 
             ]);
     }
@@ -59,10 +84,10 @@ class StudentResource extends Resource
         return $table
             ->columns([
                 //
-                TextColumn::make('nis')
+                TextColumn::make('nisn')
                     ->searchable()
-                    ->label('NIS'),
-                TextColumn::make('name')
+                    ->label('NISN'),
+                TextColumn::make('nama')
                     ->searchable(),
                 TextColumn::make('kelas.nama_kelas')
                     ->label('Kelas')
@@ -71,9 +96,10 @@ class StudentResource extends Resource
                 TextColumn::make('jenis_kelamin')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('email')
+                TextColumn::make('tahun_masuk')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                
             ])
             ->filters([
                 //

@@ -10,8 +10,14 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class TodayScheduleWidget extends BaseWidget
 {
+    protected static ?string $permission = 'widget_TodayScheduleWidget';
     protected static ?int $sort = 1;
     protected int | string | array $columnSpan = 'full';
+
+    public static function canView(): bool
+    {
+        return auth()->user()?->can('widget_TodayScheduleWidget');
+    }
 
     protected function getTableHeading(): string
     {
@@ -73,9 +79,4 @@ class TodayScheduleWidget extends BaseWidget
         return $dayNames[Carbon::now()->format('l')];
     }
 
-    public static function canView(): bool
-    {
-        // Untuk sementara, aktifkan untuk semua pengguna untuk testing
-        return true;
-    }
 }

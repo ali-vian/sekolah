@@ -25,10 +25,12 @@ class User extends Authenticatable #implements FilamentUser
      */
     protected $fillable = [
         'name',
+        'kode_guru',
         'nip',
         'jenis_kelamin',
         'email',
         'password',
+
     ];
 
     public function kelas()
@@ -45,6 +47,8 @@ class User extends Authenticatable #implements FilamentUser
     {
         return $this->hasMany(\App\Models\AbsenGuru::class, 'guru_id', 'id');
     }
+    
+
 
     /**
      * The attributes that should be hidden for serialization.

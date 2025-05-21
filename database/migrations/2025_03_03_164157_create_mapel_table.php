@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('nama_mapel');
             $table->string('kode_mapel');
-            $table->string('jenjang');
-            $table->string('jurusan');
             $table->timestamps();
         });
     }

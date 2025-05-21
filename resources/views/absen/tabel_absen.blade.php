@@ -13,6 +13,12 @@
             color: black !important;
             font-weight: bold;
         }
+    
+        .form-check-input[type="radio"] {
+            width: 1em;
+            height: 1em;
+            cursor: pointer;
+        }
     </style>
     @php
         use Carbon\Carbon;
@@ -42,23 +48,40 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal"
-                        data-bs-target="#tambahabsen">
+                    @php
+                        $role = DB::table('model_has_roles')
+                            ->where('model_id', auth()->id())
+                            ->pluck('role_id')->first() 
+                    @endphp
+                    
+                    @if ($role == 1 || $role == 4)
+                    <a class="btn btn-primary mb-4" href="/absen/create">
                         Tambah Absen
-                    </button>
-                    @include('absen.modal.tambah_absen')
+                    </a>
+                    @endif
+                    <div class="mb-3">
+                        <label for="statusFilter" class="form-label">Filter Status Absen:</label>
+                        <select id="statusFilter" class="form-select" style="width: 200px;">
+                            <option value="">Semua</option>
+                            <option value="Hadir">Hadir</option>
+                            <option value="Izin">Izin</option>
+                            <option value="Sakit">Sakit</option>
+                            <option value="Alfa">Alfa</option>
+                        </select>
+                    </div>
+                    
                     <div class="table-responsive">
                         <table id="datatable" class="table " data-toggle="data-table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>No</th>
                                     <th>Nama Guru</th>
                                     <th>NIP/NUPTK</th>
                                     <th>L/P</th>
                                     @foreach ($dates as $date)
                                         @php
                                             $dayOfWeek = \Carbon\Carbon::parse($date)->dayOfWeek;
-                                            $isWeekend = $dayOfWeek == 6 || $dayOfWeek == 0;
+                                            $isWeekend =  $dayOfWeek == 0;
                                             $holiday =
                                                 $liburs->firstWhere('tanggal_mulai', '<=', $date) &&
                                                 $liburs->firstWhere('tanggal_selesai', '>=', $date);
@@ -77,7 +100,6 @@
                                     <th>Total</th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 @foreach ($gurus as $guru)
                                     <tr>
@@ -96,20 +118,24 @@
                                             @endphp
                                             <td>
                                                 @if ($attendance)
-                                                    <span
+                                                    <a href="/absen/{{ $attendance->id }}/edit"><span
                                                         class="badge
-                                                    @if ($attendance->status == 'Hadir') bg-success
-                                                    @elseif ($attendance->status == 'Absen') bg-danger
-                                                    @elseif ($attendance->status == 'Izin') bg-warning
-                                                    @elseif ($attendance->status == 'Sakit') bg-info @endif"
-                                                        data-bs-toggle="modal" data-bs-target="#detailAbsenModal"
+                                                            @if ($attendance->status == 'Hadir') bg-success
+                                                            @elseif ($attendance->status == 'Alfa') bg-danger
+                                                            @elseif ($attendance->status == 'Izin') bg-warning
+                                                            @elseif ($attendance->status == 'Sakit') bg-info @endif"
+                                                        {{-- data-id-absen="{{ $attendance->id }}"
+                                                        data-status="{{ $attendance->status }}"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#detailAbsenModal"
                                                         data-guru-name="{{ $guru->name }}"
-                                                        data-tanggal="{{ \Carbon\Carbon::parse($attendance->tanggal)->format('d F Y') }}"
-                                                        data-jam-masuk="{{ $attendance->jam_masuk }}"
-                                                        data-jam-keluar="{{ $attendance->jam_keluar }}"
-                                                        data-status="{{ ucfirst($attendance->status) }}">
+                                                        data-tanggal="{{ Carbon::parse($attendance->waktu_absen)->format('d F Y') }}"
+                                                        data-jam-masuk="{{ Carbon::parse($attendance->waktu_absen)->format('H:i') }}"
+                                                        data-status="{{ $attendance->status }}" --}}
+                                                        >
                                                         {{ strtoupper(substr($attendance->status, 0, 1)) }}
                                                     </span>
+                                                    </a>
                                                 @else
                                                     <span class="text-muted">-</span>
                                                 @endif
@@ -117,7 +143,6 @@
                                         @endforeach
                                         <td>{{ $guru->total_hadir }}</td>
                                     </tr>
-                                    @include('absen.modal.detail_absen')
                                 @endforeach
                             </tbody>
                         </table>
@@ -134,5 +159,71 @@
                 new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
+
+        document.addEventListener("DOMContentLoaded", function () {
+                const form = document.querySelector("form"); // sesuaikan jika form punya ID
+
+                form.addEventListener("submit", function () {
+                    // Hapus semua input hidden sebelumnya
+                    document
+                        .querySelectorAll(".dynamic-guru-id")
+                        .forEach((el) => el.remove());
+
+                    // Ambil semua radio yang terpilih
+                    const checkedRadios = document.querySelectorAll(
+                        ".status-radio:checked"
+                    );
+
+                    checkedRadios.forEach((radio) => {
+                        const guruId = radio.getAttribute("data-guru-id");
+
+                        const hiddenInput = document.createElement("input");
+                        hiddenInput.type = "hidden";
+                        hiddenInput.name = "guru_id[]";
+                        hiddenInput.value = guruId;
+                        hiddenInput.classList.add("dynamic-guru-id");
+
+                        form.appendChild(hiddenInput);
+                    });
+                });
+            });
+
+            $(document).ready(function () {
+                // Pastikan DataTable dihancurkan sebelum inisialisasi ulang
+                var table = $("#datatable").DataTable({
+                    responsive: true,
+                    destroy: true, // Menonaktifkan DataTable lama sebelum re-inisialisasi
+                });
+
+                // Menambahkan event listener untuk perubahan pada filter status
+                $("#statusFilter").on("change", function () {
+                    var selectedStatus = this.value;
+
+                    // Menambahkan filter custom
+                    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+                        if (!selectedStatus) return true; // Jika tidak ada filter, tampilkan semua
+
+                        var row = table.row(dataIndex).node();
+                        var badges = $(row).find("span[data-status]"); // Sesuaikan dengan kolom yang memiliki data-status
+                        var match = false;
+
+                        // Periksa apakah salah satu badge memiliki status yang sesuai
+                        badges.each(function () {
+                            if ($(this).data("status") === selectedStatus) {
+                                match = true;
+                                return false; // keluar dari loop
+                            }
+                        });
+
+                        return match; // Jika match, tampilkan row
+                    });
+
+                    // Terapkan filter dan gambar ulang tabel
+                    table.draw();
+
+                    // Hapus filter custom agar tidak menumpuk
+                    $.fn.dataTable.ext.search.pop();
+                });
+            });
     </script>
 @endsection

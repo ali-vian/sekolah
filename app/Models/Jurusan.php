@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Jurusan extends Model
 {
@@ -22,4 +23,9 @@ class Jurusan extends Model
         'kompetensi',
         'gambar'
     ];
+
+    public function kelas()
+    {
+        return $this->hasMany(\App\Models\Kelas::class,'jurusan_id');
+    }
 }

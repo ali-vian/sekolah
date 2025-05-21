@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateWaktu extends CreateRecord
 {
     protected static string $resource = WaktuResource::class;
+
+    public function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl("index");
+    }
 }

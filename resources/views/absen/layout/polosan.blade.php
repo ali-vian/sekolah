@@ -6,9 +6,16 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <title></title>
       {{-- icon bootstrap  --}}
+      <!-- Tambahkan di layout atau sebelum </body> -->
+        {{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> --}}
+
       <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
       {{-- bootstrap --}}
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+          <!-- 1. jQuery (harus sebelum script.js) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
       <!-- Favicon -->
       <link rel="shortcut icon" href="{{ asset('img/smktip2.png') }}" />
 
@@ -26,24 +33,13 @@
 
       <!-- RTL Css -->
       <link rel="stylesheet" href="{{ asset('css/rtl.min.css') }}"/>
+      
 
   </head>
   <body>
     <aside class="sidebar sidebar-default sidebar-white sidebar-base navs-rounded-all ">
         <div class="sidebar-header d-flex align-items-center justify-content-start">
             <a href="/admin/dashboard" class="navbar-brand">
-
-                <!--Logo start-->
-                {{-- <div class="logo-main">
-                    <div class="logo-normal">
-                        <img src="{{ asset('img/smktip2.png') }}" alt="gambar" class=" icon-30"  viewBox="0 0 30 30" fill="none">
-                    </div>
-                    <div class="logo-mini">
-                        <img src="{{ asset('img/smktip2.png') }}" alt="gambar" class=" icon-30"  viewBox="0 0 30 30" fill="none">
-                    </div>
-                </div> --}}
-                <!--logo End-->
-
                 <h4 class="logo-title">SMKS Wahas</h4>
             </a>
             <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
@@ -60,7 +56,7 @@
                 <!-- Sidebar Menu Start -->
                 <ul class="navbar-nav iq-main-menu" id="sidebar-menu">
                     <!-- Home Section -->
-                    {{-- <li class="nav-item static-item">
+                    <li class="nav-item static-item">
                         <a class="nav-link static-item disabled" href="#" tabindex="-1">
                             <span class="default-icon">Home</span>
                             <span class="mini-icon">-</span>
@@ -76,7 +72,7 @@
                             </i>
                             <span class="item-name">Dashboard</span>
                         </a>
-                    </li> --}}
+                    </li>
 
                     <li><hr class="hr-horizontal"></li>
                     <li class="nav-item static-item">
@@ -86,60 +82,6 @@
                         </a>
                     </li>
 
-                    <!-- Users Section -->
-                    {{-- <li class="nav-item">
-                        <a class="nav-link {{ Request::is('data_admin', 'data_guru*', 'data_kepsek') ? 'active' : '' }}"
-                           data-bs-toggle="collapse" href="#sidebar-user"
-                           role="button" aria-expanded="{{ Request::is('data_admin', 'data_guru*', 'data_kepsek') ? 'true' : 'false' }}"
-                           aria-controls="sidebar-user">
-                            <i class="icon">
-                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M11.9488 14.54C8.49884 14.54 5.58789 15.1038 5.58789 17.2795C5.58789 19.4562 8.51765 20.0001 11.9488 20.0001C15.3988 20.0001 18.3098 19.4364 18.3098 17.2606C18.3098 15.084 15.38 14.54 11.9488 14.54Z" fill="currentColor"></path>
-                                    <path opacity="0.4" d="M11.949 12.467C14.2851 12.467 16.1583 10.5831 16.1583 8.23351C16.1583 5.88306 14.2851 4 11.949 4C9.61293 4 7.73975 5.88306 7.73975 8.23351C7.73975 10.5831 9.61293 12.467 11.949 12.467Z" fill="currentColor"></path>
-                                    <path opacity="0.4" d="M21.0881 9.21923C21.6925 6.84176 19.9205 4.70654 17.664 4.70654C17.4187 4.70654 17.1841 4.73356 16.9549 4.77949C16.9244 4.78669 16.8904 4.802 16.8725 4.82902C16.8519 4.86324 16.8671 4.90917 16.8895 4.93889C17.5673 5.89528 17.9568 7.0597 17.9568 8.30967C17.9568 9.50741 17.5996 10.6241 16.9728 11.5508C16.9083 11.6462 16.9656 11.775 17.0793 11.7948C17.2369 11.8227 17.3981 11.8371 17.5629 11.8416C19.2059 11.8849 20.6807 10.8213 21.0881 9.21923Z" fill="currentColor"></path>
-                                    <path d="M22.8094 14.817C22.5086 14.1722 21.7824 13.73 20.6783 13.513C20.1572 13.3851 18.747 13.205 17.4352 13.2293C17.4155 13.232 17.4048 13.2455 17.403 13.2545C17.4003 13.2671 17.4057 13.2887 17.4316 13.3022C18.0378 13.6039 20.3811 14.916 20.0865 17.6834C20.074 17.8032 20.1698 17.9068 20.2888 17.8888C20.8655 17.8059 22.3492 17.4853 22.8094 16.4866C23.0637 15.9589 23.0637 15.3456 22.8094 14.817Z" fill="currentColor"></path>
-                                    <path opacity="0.4" d="M7.04459 4.77973C6.81626 4.7329 6.58077 4.70679 6.33543 4.70679C4.07901 4.70679 2.30701 6.84201 2.9123 9.21947C3.31882 10.8216 4.79355 11.8851 6.43661 11.8419C6.60136 11.8374 6.76343 11.8221 6.92013 11.7951C7.03384 11.7753 7.09115 11.6465 7.02668 11.551C6.3999 10.6234 6.04263 9.50765 6.04263 8.30991C6.04263 7.05904 6.43303 5.89462 7.11085 4.93913C7.13234 4.90941 7.14845 4.86348 7.12696 4.82926C7.10906 4.80135 7.07593 4.78694 7.04459 4.77973Z" fill="currentColor"></path>
-                                    <path d="M3.32156 13.5127C2.21752 13.7297 1.49225 14.1719 1.19139 14.8167C0.936203 15.3453 0.936203 15.9586 1.19139 16.4872C1.65163 17.4851 3.13531 17.8066 3.71195 17.8885C3.83104 17.9065 3.92595 17.8038 3.91342 17.6832C3.61883 14.9167 5.9621 13.6046 6.56918 13.3029C6.59425 13.2885 6.59962 13.2677 6.59694 13.2542C6.59515 13.2452 6.5853 13.2317 6.5656 13.2299C5.25294 13.2047 3.84358 13.3848 3.32156 13.5127Z" fill="currentColor"></path>
-                                </svg>
-                            </i>
-                            <span class="item-name">Users</span>
-                            <i class="right-icon">
-                                <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </i>
-                        </a>
-                        <ul class="sub-nav collapse {{ Request::is('data_admin', 'data_guru*', 'data_kepsek') ? 'show' : '' }}" id="sidebar-user">
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('data_admin') ? 'active' : '' }}" href="{{ url('data_admin') }}" id="active">
-                                    <i class="icon">
-                                        <!-- SVG Icon -->
-                                    </i>
-                                    <i class="sidenav-mini-icon">A</i>
-                                    <span class="item-name">Data Admin</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('data_guru*') ? 'active' : '' }}" href="{{ url('data_guru') }}" id="active">
-                                    <i class="icon">
-                                        <!-- SVG Icon -->
-                                    </i>
-                                    <i class="sidenav-mini-icon">G</i>
-                                    <span class="item-name">Data Guru</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('data_kepsek') ? 'active' : '' }}" href="{{ url('data_kepsek') }}" id="active">
-                                    <i class="icon">
-                                        <!-- SVG Icon -->
-                                    </i>
-                                    <i class="sidenav-mini-icon">K</i>
-                                    <span class="item-name">Data Kepsek</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li> --}}
-
                     <!-- Administrasi Section -->
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('tapel', 'libur') ? 'active' : '' }}"
@@ -147,12 +89,10 @@
                            role="button" aria-expanded="{{ Request::is('tapel', 'libur') ? 'true' : 'false' }}"
                            aria-controls="utilities-error">
                             <i class="icon">
-                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 4H20V20H4V4Z" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M4 10H20" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M10 14H14" stroke="currentColor" stroke-width="2"/>
-                                </svg>
-                            </i>
+                            <svg width="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" d="M16.6643 21.9897H7.33488C5.88835 22.0796 4.46781 21.5781 3.3989 20.6011C2.4219 19.5312 1.92041 18.1107 2.01032 16.6652V7.33482C1.92041 5.88932 2.4209 4.46878 3.3979 3.39889C4.46781 2.42189 5.88835 1.92041 7.33488 2.01032H16.6643C18.1089 1.92041 19.5284 2.4209 20.5973 3.39789C21.5733 4.46878 22.0758 5.88832 21.9899 7.33482V16.6652C22.0788 18.1107 21.5783 19.5312 20.6013 20.6011C19.5314 21.5781 18.1109 22.0796 16.6643 21.9897Z" fill="currentColor"></path>                                <path d="M17.0545 10.3976L10.5018 16.9829C10.161 17.3146 9.7131 17.5 9.24574 17.5H6.95762C6.83105 17.5 6.71421 17.4512 6.62658 17.3634C6.53895 17.2756 6.5 17.1585 6.5 17.0317L6.55842 14.7195C6.56816 14.261 6.75315 13.8317 7.07446 13.5098L11.7189 8.8561C11.7967 8.77805 11.9331 8.77805 12.011 8.8561L13.6399 10.4785C13.747 10.5849 13.9028 10.6541 14.0683 10.6541C14.4286 10.6541 14.7109 10.3615 14.7109 10.0102C14.7109 9.83463 14.6428 9.67854 14.5357 9.56146C14.5065 9.52244 12.9554 7.97805 12.9554 7.97805C12.858 7.88049 12.858 7.71463 12.9554 7.61707L13.6078 6.95366C14.2114 6.34878 15.1851 6.34878 15.7888 6.95366L17.0545 8.22195C17.6485 8.81707 17.6485 9.79268 17.0545 10.3976Z" fill="currentColor"></path>
+                            </svg>
+                            </i>                            
                             <span class="item-name">Administrasi</span>
                             <i class="right-icon">
                                 <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -167,7 +107,7 @@
                                         <!-- SVG Icon -->
                                     </i>
                                     <i class="sidenav-mini-icon">DT</i>
-                                    <span class="item-name">Data Tapel</span>
+                                    <span class="item-name">Tahun Pelajaran</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -197,15 +137,11 @@
                            role="button" aria-expanded="{{ Request::is('kelola_absen*') || Request::is('admin/rekap_absen') ? 'true' : 'false' }}"
                            aria-controls="sidebar-widget">
                             <i class="icon">
-                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="10" stroke="currentColor"
-                                    stroke-width="2" />
-                                <path d="M12 6V12L15 15" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" />
-                            </svg>
+                                <svg width="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.997 15.1746C7.684 15.1746 4 15.8546 4 18.5746C4 21.2956 7.661 21.9996 11.997 21.9996C16.31 21.9996 19.994 21.3206 19.994 18.5996C19.994 15.8786 16.334 15.1746 11.997 15.1746Z" fill="currentColor"></path>                                <path opacity="0.4" d="M11.9971 12.5838C14.9351 12.5838 17.2891 10.2288 17.2891 7.29176C17.2891 4.35476 14.9351 1.99976 11.9971 1.99976C9.06008 1.99976 6.70508 4.35476 6.70508 7.29176C6.70508 10.2288 9.06008 12.5838 11.9971 12.5838Z" fill="currentColor"></path>
+                                </svg>                            
                             </i>
-                            <span class="item-name">Absen</span>
+                            <span class="item-name">Absen Guru</span>
                             <i class="right-icon">
                                 <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18"
                                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -214,9 +150,9 @@
                             </svg>
                             </i>
                         </a>
-                        <ul class="sub-nav collapse {{ Request::is('kelola_absen*') || Request::is('admin/rekap_absen') ? 'show' : '' }}" id="sidebar-widget">
+                        <ul class="sub-nav collapse {{ Request::is('admin/kelola_absen') || Request::is('admin/rekap_absen') ? 'show' : '' }}" id="sidebar-widget">
                             <li class="nav-item">
-                                <a class="nav-link {{ Request::is('kelola_absen') ? 'active' : '' }}" href="{{ url('kelola_absen') }}" id="active">
+                                <a class="nav-link {{ Request::is('admin/kelola_absen') ? 'active' : '' }}" href="{{ url('admin/kelola_absen') }}" id="active">
                                     <i class="icon">
                                         <!-- SVG Icon -->
                                     </i>
@@ -225,7 +161,88 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {{ Request::is('admin/rekap_absen') ? 'active' : '' }}" href="{{ url('/admin/rekap_absen') }}" id="active">
+                                <a class="nav-link {{ Request::is('admin/rekap_absen') ? 'active' : '' }}" href="{{ url('admin/rekap_absen') }}" id="active">
+                                    <i class="icon">
+                                        <!-- SVG Icon -->
+                                    </i>
+                                    <i class="sidenav-mini-icon">A</i>
+                                    <span class="item-name">Rekap Absen</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--- ------------ End Absen Section ----------- --->
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('kelola_absenharian') || Request::is('admin/rekap_absenharian') ? 'active' : '' }}"
+                           data-bs-toggle="collapse" href="#sidebar-widget1"
+                           role="button" aria-expanded="{{ Request::is('kelola_absenharian') || Request::is('admin/rekap_absenharian') ? 'true' : 'false' }}"
+                           aria-controls="sidebar-widget1">
+                            <i class="icon">
+                                <svg width="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.9488 14.54C8.49884 14.54 5.58789 15.1038 5.58789 17.2795C5.58789 19.4562 8.51765 20.0001 11.9488 20.0001C15.3988 20.0001 18.3098 19.4364 18.3098 17.2606C18.3098 15.084 15.38 14.54 11.9488 14.54Z" fill="currentColor"></path>                                <path opacity="0.4" d="M11.949 12.467C14.2851 12.467 16.1583 10.5831 16.1583 8.23351C16.1583 5.88306 14.2851 4 11.949 4C9.61293 4 7.73975 5.88306 7.73975 8.23351C7.73975 10.5831 9.61293 12.467 11.949 12.467Z" fill="currentColor"></path>                                <path opacity="0.4" d="M21.0881 9.21923C21.6925 6.84176 19.9205 4.70654 17.664 4.70654C17.4187 4.70654 17.1841 4.73356 16.9549 4.77949C16.9244 4.78669 16.8904 4.802 16.8725 4.82902C16.8519 4.86324 16.8671 4.90917 16.8895 4.93889C17.5673 5.89528 17.9568 7.0597 17.9568 8.30967C17.9568 9.50741 17.5996 10.6241 16.9728 11.5508C16.9083 11.6462 16.9656 11.775 17.0793 11.7948C17.2369 11.8227 17.3981 11.8371 17.5629 11.8416C19.2059 11.8849 20.6807 10.8213 21.0881 9.21923Z" fill="currentColor"></path>                                <path d="M22.8094 14.817C22.5086 14.1722 21.7824 13.73 20.6783 13.513C20.1572 13.3851 18.747 13.205 17.4352 13.2293C17.4155 13.232 17.4048 13.2455 17.403 13.2545C17.4003 13.2671 17.4057 13.2887 17.4316 13.3022C18.0378 13.6039 20.3811 14.916 20.0865 17.6834C20.074 17.8032 20.1698 17.9068 20.2888 17.8888C20.8655 17.8059 22.3492 17.4853 22.8094 16.4866C23.0637 15.9589 23.0637 15.3456 22.8094 14.817Z" fill="currentColor"></path>                                <path opacity="0.4" d="M7.04459 4.77973C6.81626 4.7329 6.58077 4.70679 6.33543 4.70679C4.07901 4.70679 2.30701 6.84201 2.9123 9.21947C3.31882 10.8216 4.79355 11.8851 6.43661 11.8419C6.60136 11.8374 6.76343 11.8221 6.92013 11.7951C7.03384 11.7753 7.09115 11.6465 7.02668 11.551C6.3999 10.6234 6.04263 9.50765 6.04263 8.30991C6.04263 7.05904 6.43303 5.89462 7.11085 4.93913C7.13234 4.90941 7.14845 4.86348 7.12696 4.82926C7.10906 4.80135 7.07593 4.78694 7.04459 4.77973Z" fill="currentColor"></path>                                <path d="M3.32156 13.5127C2.21752 13.7297 1.49225 14.1719 1.19139 14.8167C0.936203 15.3453 0.936203 15.9586 1.19139 16.4872C1.65163 17.4851 3.13531 17.8066 3.71195 17.8885C3.83104 17.9065 3.92595 17.8038 3.91342 17.6832C3.61883 14.9167 5.9621 13.6046 6.56918 13.3029C6.59425 13.2885 6.59962 13.2677 6.59694 13.2542C6.59515 13.2452 6.5853 13.2317 6.5656 13.2299C5.25294 13.2047 3.84358 13.3848 3.32156 13.5127Z" fill="currentColor"></path>
+                                </svg>                            
+                            </i>
+                            <span class="item-name">Absensi Harian</span>
+                            <i class="right-icon">
+                                <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                            </i>
+                        </a>
+                        <ul class="sub-nav collapse {{ Request::is('admin/kelola_absenharian') || Request::is('admin/rekap_absenharian') ? 'show' : '' }}" id="sidebar-widget1">
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('admin/kelola_absenharian') ? 'active' : '' }}" href="{{ url('admin/kelola_absenharian') }}" id="active">
+                                    <i class="icon">
+                                        <!-- SVG Icon -->
+                                    </i>
+                                    <i class="sidenav-mini-icon">K</i>
+                                    <span class="item-name">Kelola Absen</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('admin/rekap_absenharian') ? 'active' : '' }}" href="{{ url('admin/rekap_absenharian') }}" id="active">
+                                    <i class="icon">
+                                        <!-- SVG Icon -->
+                                    </i>
+                                    <i class="sidenav-mini-icon">A</i>
+                                    <span class="item-name">Rekap Absen</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('kelola_absenmapel') || Request::is('admin/rekap_absenmapel') ? 'active' : '' }}"
+                           data-bs-toggle="collapse" href="#sidebar-widget2"
+                           role="button" aria-expanded="{{ Request::is('kelola_absenmapel') || Request::is('admin/rekap_absenmapel') ? 'true' : 'false' }}"
+                           aria-controls="sidebar-widget1">
+                            <i class="icon">
+                                <svg width="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.34933 14.8577C5.38553 14.8577 2 15.47 2 17.9173C2 20.3665 5.364 20.9999 9.34933 20.9999C13.3131 20.9999 16.6987 20.3876 16.6987 17.9403C16.6987 15.4911 13.3347 14.8577 9.34933 14.8577Z" fill="currentColor"></path>                                <path opacity="0.4" d="M9.34935 12.5248C12.049 12.5248 14.2124 10.4062 14.2124 7.76241C14.2124 5.11865 12.049 3 9.34935 3C6.65072 3 4.48633 5.11865 4.48633 7.76241C4.48633 10.4062 6.65072 12.5248 9.34935 12.5248Z" fill="currentColor"></path>                                <path opacity="0.4" d="M16.1733 7.84873C16.1733 9.19505 15.7604 10.4513 15.0363 11.4948C14.961 11.6021 15.0275 11.7468 15.1586 11.7698C15.3406 11.7995 15.5275 11.8177 15.7183 11.8216C17.6165 11.8704 19.3201 10.6736 19.7907 8.87116C20.4884 6.19674 18.4414 3.79541 15.8338 3.79541C15.551 3.79541 15.2799 3.82416 15.0157 3.87686C14.9795 3.88453 14.9404 3.90177 14.9208 3.93244C14.8954 3.97172 14.914 4.02251 14.9394 4.05605C15.7232 5.13214 16.1733 6.44205 16.1733 7.84873Z" fill="currentColor"></path>                                <path d="M21.779 15.1693C21.4316 14.4439 20.593 13.9465 19.3171 13.7022C18.7153 13.5585 17.0852 13.3544 15.5695 13.3831C15.547 13.386 15.5343 13.4013 15.5324 13.4109C15.5294 13.4262 15.5363 13.4492 15.5656 13.4655C16.2662 13.8047 18.9737 15.2804 18.6332 18.3927C18.6185 18.5288 18.729 18.6438 18.867 18.6246C19.5333 18.5317 21.2476 18.1704 21.779 17.0474C22.0735 16.4533 22.0735 15.7634 21.779 15.1693Z" fill="currentColor"></path>
+                                </svg>                            
+                            </i>
+                            <span class="item-name">Absensi Mapel</span>
+                            <i class="right-icon">
+                                <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                            </i>
+                        </a>
+                        <ul class="sub-nav collapse {{ Request::is('admin/kelola_absenmapel') || Request::is('admin/rekap_absenmapel') ? 'show' : '' }}" id="sidebar-widget2">
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('admin/kelola_absenmapel') ? 'active' : '' }}" href="{{ url('admin/kelola_absenmapel') }}" id="active">
+                                    <i class="icon">
+                                        <!-- SVG Icon -->
+                                    </i>
+                                    <i class="sidenav-mini-icon">K</i>
+                                    <span class="item-name">Kelola Absen</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('admin/rekap_absenmapel') ? 'active' : '' }}" href="{{ url('admin/rekap_absenmapel') }}" id="active">
                                     <i class="icon">
                                         <!-- SVG Icon -->
                                     </i>
@@ -420,6 +437,8 @@
       </footer> --}}
       <!-- Footer Section End -->
     </main>
+
+
     <script src="{{ asset('js/script.js') }}"></script>
     <!-- Library Bundle Script -->
     <script src="{{ asset('js/core/libs.min.js') }}"></script>

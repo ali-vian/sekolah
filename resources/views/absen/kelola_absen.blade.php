@@ -20,7 +20,7 @@
                     @endphp
                     @while ($tanggalMulai <= $tanggalSelesai)
                         <div class="col-md-3">
-                            <a href="/admin/tabel_absen?month={{ $tanggalMulai->format('m') }}&year={{ $tanggalMulai->format('Y') }}"
+                            <a href="/admin/tabel_absen/{{ $tanggalMulai->format('m')."_". $tanggalMulai->format('Y') }}"
                                 class="text-decoration-none">
                                 <div class="card mt-4 border-4 shadow-sm card-hover">
                                     <div class="card-body d-flex align-items-center">

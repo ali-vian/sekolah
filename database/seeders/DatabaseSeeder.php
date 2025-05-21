@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        // call factory  
+        // // call factory  
         $this->call(NewsSeeder::class);
         $this->call(AnnouncementSeeder::class);
         $this->call(AlumniSeeder::class);

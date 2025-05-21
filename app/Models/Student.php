@@ -14,7 +14,7 @@ class Student extends Model
     protected $fillable = [
         'tahun_masuk',
         'nama',
-        'kelamin',
+        'jenis_kelamin',
         'asal_sd',
         'asal_smp',
         'nik',
@@ -22,16 +22,14 @@ class Student extends Model
         'urut_yayasan',
         'urut_jurusan',
         'kode_jurusan',
-        'kelas',
-        'jurusan',
         'tempat_lahir',
         'tanggal_lahir',
         'ibu',
         'ayah',
         'alamat',
         'anak_ke',
-        'status',
         'kelas_id',
+        'status',
     ];
 
     public function kelas()

@@ -13,11 +13,24 @@ return new class extends Migration
     {
         Schema::create('student', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
+            $table->year('tahun_masuk')->nullable();
+            $table->string('nama');
+            $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
+            $table->string('asal_sd')->nullable();
+            $table->string('asal_smp')->nullable();
+            $table->string('nik')->nullable()->number_format();
+            $table->string('nisn')->nullable()->number_format();
+            $table->string('urut_yayasan')->nullable()->number_format();
+            $table->string('urut_jurusan')->nullable()->number_format();
+            $table->string('kode_jurusan')->nullable()->number_format();
+            $table->string('tempat_lahir')->nullable();
+            $table->date('tanggal_lahir')->nullable()->date_format('d-m-y');
+            $table->string('ibu')->nullable();
+            $table->string('ayah')->nullable();
+            $table->string('alamat')->nullable();
+            $table->string('anak_ke')->nullable();
             $table->foreignId('kelas_id')->constrained('kelas');
-            $table->string('nis')->number_format();
-            $table->string('email')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

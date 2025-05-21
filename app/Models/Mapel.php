@@ -13,8 +13,6 @@ class Mapel extends Model
     protected $fillable = [
         'kode_mapel',
         'nama_mapel',
-        'jenjang',
-        'jurusan',
     ];
 
     public function jadwal()

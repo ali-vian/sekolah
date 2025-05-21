@@ -10,10 +10,17 @@ use Carbon\Carbon;
 
 class JadwalDashboard extends Widget
 {
+     protected static ?string $permission = 'widget_JadwalDashboard';
     protected static string $view = 'filament.resources.resource.widgets.jadwal-dashboard';
 
     protected int | string | array $columnSpan = 'full';
     protected static ?int $sort = 2;
+
+    public static function canView(): bool
+    {
+        return auth()->user()?->can('widget_JadwalDashboard');
+    }
+
 
     public function mount(): void
     {

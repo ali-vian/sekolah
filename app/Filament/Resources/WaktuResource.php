@@ -22,7 +22,7 @@ class WaktuResource extends Resource
 {
     protected static ?string $model = Waktu::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-clock';
 
     public static function query(): Builder
 {
@@ -61,7 +61,8 @@ class WaktuResource extends Resource
                 //
                 TextColumn::make('nama')
                     ->searchable()
-                    ->label('Nama'),
+                    ->label('Jam ke-')
+                    ,
                 TextColumn::make('waktu_mulai')
                     ->searchable()
                     ->label('Waktu Mulai')
@@ -81,6 +82,7 @@ class WaktuResource extends Resource
                     return $waktuMulai->diffInMinutes($waktuSelesai).' Menit';
                 })
             ])
+            
             ->filters([
                 //
             ])

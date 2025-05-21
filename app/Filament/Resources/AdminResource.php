@@ -28,6 +28,8 @@ class AdminResource extends Resource
     protected static ?string $navigationGroup = 'Menejemen';
 
     protected static ?int $navigationSort = 02;
+    
+    
 
     public static function form(Form $form): Form
     {
@@ -37,20 +39,23 @@ class AdminResource extends Resource
                 TextInput::make('name')
                     ->required()
                     ->placeholder('Name'),
-                TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->placeholder('********'),
+                TextInput::make('kode_guru')
+                    ->required(),
+                // TextInput::make('password')
+                //     ->password()
+                //     ->required()
+                //     ->placeholder('********'),
                 TextInput::make('email')
                     ->required()
                     ->placeholder('Email'),
                 TextInput::make('nip')
                     ->required()
                     ->placeholder('NIP'),
+
                 Select::make('jenis_kelamin')
                     ->options([
-                        'Laki-laki' => 'Laki-laki',
-                        'Perempuan' => 'Perempuan',
+                        'L' => 'Laki-laki',
+                        'P' => 'Perempuan',
                     ])
                     ->placeholder('Jenis Kelamin'),
                 Forms\Components\Select::make('roles')
@@ -73,11 +78,12 @@ class AdminResource extends Resource
         )
             ->columns([
                 //
-                TextColumn::make('nip')
-                    ->label('NIP')
+                TextColumn::make('kode_guru'),
+                TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('name')
+                TextColumn::make('nip')
+                    ->label('NIP')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('jenis_kelamin')

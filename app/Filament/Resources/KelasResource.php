@@ -30,8 +30,10 @@ class KelasResource extends Resource
                 TextInput::make('nama_kelas')
                     ->required()
                     ->placeholder('Nama Kelas'),
-                TextInput::make('jurusan')
+                Select::make('jurusan_id')
+                    ->relationship('getJurusan', 'name')
                     ->required()
+                    ->label("Jurusan")
                     ->placeholder('Jurusan'),
                 Select::make('walikelas')
                     ->relationship('guru', 'name')
@@ -55,7 +57,8 @@ class KelasResource extends Resource
                     ->label('Wali Kelas')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('jurusan')
+                TextColumn::make('getJurusan.name')
+                    ->label("Jurusan")
                     ->searchable()
                     ->sortable(),
                     TextColumn::make('jumlah_siswa')

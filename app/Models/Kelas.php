@@ -13,9 +13,12 @@ class Kelas extends Model
     protected $fillable = [
         'nama_kelas',
         'walikelas',
-        'jurusan',
+        'jurusan_id'
     ];
 
+    public function getJurusan(){
+        return $this->belongsTo(\App\Models\Jurusan::class, 'jurusan_id');
+    }
     public function siswa()
     {
         return $this->hasMany(\App\Models\Student::class, 'kelas_id');

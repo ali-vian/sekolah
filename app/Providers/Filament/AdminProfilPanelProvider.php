@@ -67,8 +67,9 @@ class AdminProfilPanelProvider extends PanelProvider
             ->navigationItems([
                 NavigationItem::make('Dashboard')
                 ->label('Absen')
-                ->url('/admin/absen')
-                ->icon('heroicon-o-clipboard-document-check'),
+                ->url('/admin/dashboard')
+                ->icon('heroicon-o-clipboard-document-check')
+                ->visible(fn () => auth()->user()?->can('widget_JadwalDashboard')),
             ])
             
             ->plugins([

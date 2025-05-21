@@ -82,6 +82,7 @@ return [
         'discover_all_pages' => false,
     ],
 
+    'register_permissions' => true,
     'register_role_policy' => [
         'enabled' => true,
     ],
